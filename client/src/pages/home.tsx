@@ -133,12 +133,13 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <div className="flex items-center justify-center mb-6">
+              <div className="flex items-center justify-center space-x-4 mb-6">
                 <img 
                   src="/collabotree-logo.png" 
                   alt="CollaboTree Logo" 
-                  className="h-12 w-auto object-contain" 
+                  className="h-14 w-auto object-contain" 
                 />
+                <span className="font-bold text-2xl text-white">CollaboTree</span>
               </div>
               <p className="text-gray-400 leading-relaxed">
                 The world's first student-only freelancing marketplace. Connect with verified students from top universities.
