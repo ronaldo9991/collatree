@@ -137,7 +137,7 @@ export default function Home() {
                 <img 
                   src="/collabotree-logo.png" 
                   alt="CollaboTree Logo" 
-                  className="w-8 h-8 rounded-lg" 
+                  className="w-8 h-8 object-contain" 
                 />
                 <span className="font-bold text-xl">CollaboTree</span>
               </div>

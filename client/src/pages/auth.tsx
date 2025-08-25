@@ -138,7 +138,7 @@ export default function Auth() {
             <img 
               src="/collabotree-logo.png" 
               alt="CollaboTree Logo" 
-              className="w-12 h-12 rounded-xl" 
+              className="w-12 h-12 object-contain" 
             />
             <span className="font-bold text-2xl text-gray-900">CollaboTree</span>
           </div>

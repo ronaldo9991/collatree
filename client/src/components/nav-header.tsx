@@ -43,7 +43,7 @@ export function NavHeader({ onRoleChange, currentRole }: NavHeaderProps) {
               <img 
                 src="/collabotree-logo.png" 
                 alt="CollaboTree Logo" 
-                className="w-8 h-8 rounded-lg" 
+                className="w-8 h-8 object-contain" 
               />
               <span className="font-bold text-xl text-gray-900 tracking-tight">CollaboTree</span>
             </Link>
@@ -94,7 +94,7 @@ export function NavHeader({ onRoleChange, currentRole }: NavHeaderProps) {
             <img 
               src="/collabotree-logo.png" 
               alt="CollaboTree Logo" 
-              className="w-8 h-8 rounded-lg" 
+              className="w-8 h-8 object-contain" 
             />
             <span className="font-bold text-xl text-gray-900 tracking-tight">CollaboTree</span>
           </Link>
