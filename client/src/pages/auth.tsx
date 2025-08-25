@@ -134,13 +134,12 @@ export default function Auth() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center space-x-3 mb-4">
+          <div className="flex items-center justify-center mb-4">
             <img 
               src="/collabotree-logo.png" 
               alt="CollaboTree Logo" 
-              className="w-12 h-12 object-contain" 
+              className="h-16 w-auto object-contain" 
             />
-            <span className="font-bold text-2xl text-gray-900">CollaboTree</span>
           </div>
           <p className="text-gray-600">Student-only freelancing marketplace</p>
         </div>
