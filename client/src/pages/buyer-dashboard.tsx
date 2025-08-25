@@ -107,8 +107,8 @@ export default function BuyerDashboard() {
     // Query will automatically update due to searchQuery dependency
   };
 
-  const recentOrders = orders?.slice(0, 2) || [];
-  const recentFavorites = favorites?.slice(0, 2) || [];
+  const recentOrders = Array.isArray(orders) ? orders.slice(0, 2) : [];
+  const recentFavorites = Array.isArray(favorites) ? favorites.slice(0, 2) : [];
 
   return (
     <div className="min-h-screen bg-gray-50">

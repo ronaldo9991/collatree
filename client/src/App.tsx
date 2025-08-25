@@ -36,12 +36,8 @@ function Router() {
     <Switch>
       <Route path="/auth" component={Auth} />
       
-      {/* Protected routes */}
-      <Route path="/">
-        <AuthGuard>
-          <Home />
-        </AuthGuard>
-      </Route>
+      {/* Public homepage */}
+      <Route path="/" component={Home} />
       
       <Route path="/student">
         <AuthGuard>

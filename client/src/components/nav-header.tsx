@@ -32,7 +32,58 @@ export function NavHeader({ onRoleChange, currentRole }: NavHeaderProps) {
 
   const user = authData?.user;
 
-  if (!user) return null;
+  // Public navigation for non-authenticated users
+  if (!user) {
+    return (
+      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo */}
+            <Link href="/" className="flex items-center space-x-3" data-testid="link-home">
+              <img 
+                src="/collabotree-logo.png" 
+                alt="CollaboTree Logo" 
+                className="w-8 h-8 rounded-lg" 
+              />
+              <span className="font-bold text-xl text-gray-900 tracking-tight">CollaboTree</span>
+            </Link>
+
+            {/* Navigation Links */}
+            <div className="hidden md:flex items-center space-x-8">
+              <a href="#how-it-works" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
+                How it Works
+              </a>
+              <a href="#featured-projects" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
+                Featured Projects
+              </a>
+              <a href="#support" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
+                Support
+              </a>
+            </div>
+
+            {/* Login Button */}
+            <div className="flex items-center space-x-4">
+              <Button 
+                variant="outline" 
+                onClick={() => setLocation("/auth")}
+                data-testid="button-login"
+                className="rounded-xl"
+              >
+                Login
+              </Button>
+              <Button 
+                onClick={() => setLocation("/auth")}
+                data-testid="button-signup"
+                className="bg-brand-gradient rounded-xl"
+              >
+                Sign Up
+              </Button>
+            </div>
+          </div>
+        </div>
+      </nav>
+    );
+  }
 
   return (
     <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
