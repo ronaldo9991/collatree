@@ -1,0 +1,246 @@
+# CollaboTree — Replit Agent Full‑Stack Build Prompt (Student‑Only Freelancing Platform)
+
+**Act as** a principal full‑stack engineer. Generate a **production‑ready** web app called **CollaboTree** — a freelancing marketplace **exclusively for students** — with **three roles** (Student, Buyer, Admin), clean **Apple‑like** UI, and a light→dark **blue gradient** brand system derived from the logo (provided at `/mnt/data/CollaboTree Logo Design.png`). Build both **frontend and backend** with professional structure, robust auth, and role‑based access. Ship with seed data, tests, and a one‑command run.
+
+---
+
+## 0) Tech Stack & Project Scaffolding
+
+* **Framework**: Next.js 14 (App Router) + React + TypeScript.
+* **UI**: Tailwind CSS + shadcn/ui + lucide‑react icons; Radix primitives where needed.
+* **State/Data**: React Query (TanStack) for data fetching; Zod for runtime validation; server actions for mutations where appropriate.
+* **Auth**: Auth.js (NextAuth) with Email/Password + OAuth (Google optional). Enforce **role‑based access** (Student, Buyer, Admin) and **domain allow‑list** for student signup.
+* **DB**: PostgreSQL (Neon or Replit Postgres) + Prisma ORM. Include migration scripts and seed.
+* **Storage**: UploadThing or Cloudinary for images/docs; S3‑compatible adapter fallback.
+* **OCR for Student ID**: Tesseract.js (server‑side via WASM) with pluggable adapter for AWS Textract / Google Vision in `.env`.
+* **Payments (optional but wired)**: Stripe for purchases/escrow placeholder (create Checkout Sessions + webhooks); money flow can be mocked if keys absent.
+* **Email**: Resend or Nodemailer; transactional templates for verification and notifications.
+* **Logging/Monitoring**: pino logger; request/response logging middleware; simple audit log table.
+* **Security**: Helmet headers via Next middleware; rate limiting (Upstash or memory limiter); CSRF protection via Auth.js; input validation via Zod.
+* **Testing**: Vitest + Playwright smoke tests for critical flows (signups, role gates, create project, purchase).
+* **DX**: ESLint, Prettier, Husky + lint‑staged; pnpm.
+* **DevOps**: `docker-compose` for Postgres; `.replit`/Nix or default Replit runner; `pnpm dev` one‑command. Provide `seed.ts` for demo users & projects.
+
+**Important**: If a third‑party key is missing, auto‑fallback to a **mock adapter** with clear console warnings but keep flows functional for demo.
+
+---
+
+## 1) Brand, Theme & Layout
+
+* **Palette**: Light‑to‑dark blue gradient inspired by logo:
+
+  * `--blue-50:#E6F0FB` `--blue-100:#D3E8FA` `--blue-200:#A8CCF5` `--blue-300:#7FB3EF` `--blue-400:#4F97EA` `--blue-500:#3B82F6` `--blue-600:#2E6BD1` `--blue-700:#2052A8` `--blue-800:#173C80` `--blue-900:#102B5C`.
+* **Gradient tokens**: `--brand-grad: linear-gradient(135deg, var(--blue-400), var(--blue-700));` Use lighter blues for surfaces and darker for top bars/CTAs. No neon; high contrast and ample whitespace.
+* **Typography**: Inter or SF Pro Text; 1.65 line-height; bold display for headings; tracking tight.
+* **Components**: rounded‑2xl cards, soft shadows, pill filters, skeleton states, focus rings.
+* **Logo**: import `/public/logo.svg` generated from `/mnt/data/CollaboTree Logo Design.png` (convert as needed). Use in header and as favicon.
+
+---
+
+## 2) Roles & Access Control
+
+* **Roles**: `STUDENT`, `BUYER`, `ADMIN`.
+* **RBAC**: Middleware enforces route protection and server action guards. Shared `requireRole(…roles)` helper.
+* **Student Email Domain Gate**: Allow signup only if email matches allow‑list: `*.edu`, `*.ac.uk`, and `*.org` (configurable via `ALLOWED_STUDENT_SUFFIXES=.edu,.ac.uk,.org`).
+* **Student ID Verification**: 2‑step onboarding:
+
+  1. Upload Student ID (front/back or single image/PDF). Store to Storage adapter.
+  2. OCR parses **Name + Student ID + University**; if confidence ≥ threshold (config), set `studentVerification.status=“PENDING_REVIEW”` and allow limited access; Admin can approve/reject. Optional **liveness selfie** upload (off by default).
+* **Buyer**: No domain restrictions.
+* **Admin**: Invite‑only via seed or admin promotion.
+
+---
+
+## 3) Data Model (Prisma)
+
+Create Prisma models with sensible indexes and relations:
+
+* `User { id, name, email (unique), role, avatarUrl, createdAt }`
+* `StudentProfile { id, userId (unique), university, studentId, program, verificationStatus (PENDING|APPROVED|REJECTED), verificationNotes, idDocUrl, selfieUrl? }`
+* `BuyerProfile { id, userId (unique), companyName?, website?, billingAddress? }`
+* `Project { id, ownerId (User), title, slug, description, skills:string[], tags:string[], price:number, status:DRAFT|LISTED|HIRED|IN_PROGRESS|DELIVERED|CLOSED, visibility:PUBLIC|PRIVATE, coverImageUrl?, createdAt }`
+* `Team { id, projectId, name, members: TeamMember[] }`
+* `TeamMember { id, teamId, userId, role:OWNER|MEMBER }`
+* `Favorite { id, buyerId, projectId, createdAt }`
+* `Order { id, projectId, buyerId, studentId, amount, status:PENDING|PAID|REFUNDED|DISPUTED, stripeSessionId?, createdAt }`
+* `Review { id, orderId, rating:int (1–5), comment }`
+* `Notification { id, userId, type, payload jsonb, readAt? }`
+* `AuditLog { id, actorId, action, entityType, entityId, metadata jsonb, createdAt }`
+
+Seed with: 3 admins, 10 students (various universities), 6 buyers, 12 projects across categories.
+
+---
+
+## 4) Pages & Navigation (App Router)
+
+**Public**
+
+* `/` – Hero with value prop “Student‑only marketplace”, CTA: “I’m a Student” / “I’m a Buyer”. Live search bar and featured projects.
+* `/auth/*` – sign in/up flows; student vs buyer choice. Student signup form performs email domain check pre‑submit.
+* `/projects` – Marketplace browse: filters (category, skill tags, price range, university), pagination & server components.
+* `/project/[slug]` – Project detail. If viewer is Buyer, show **Hire/Buy** CTA; if Student owner, show **Edit**; if Admin, show moderation tools.
+* `/policy/*` – Terms, Privacy, Student Verification Policy.
+
+**Student Dashboard** (`/student`)
+
+* Overview cards: **Sales Earnings**, **Active Orders**, **My Projects**, **Team Invites**.
+* Routes:
+
+  * `/student/projects` (list + create/edit wizard)
+  * `/student/projects/new` (multi‑step: Basics → Scope & Pricing → Assets → Review)
+  * `/student/teams` (manage teams & invites)
+  * `/student/earnings` (sales ledger; connect Stripe Express placeholder)
+  * `/student/settings` (profile + **ID Verification** section with upload + OCR status)
+
+**Buyer Dashboard** (`/buyer`)
+
+* Overview cards: **Purchases**, **Favorites**, **Recently Viewed**.
+* Routes:
+
+  * `/buyer/marketplace` (curated student projects)
+  * `/buyer/purchases` (orders history + invoices)
+  * `/buyer/favorites` (saved projects)
+  * `/buyer/settings` (profile, billing)
+
+**Admin Dashboard** (`/admin`)
+
+* Overview charts: **New Students**, **Verification Queue**, **GMV**, **Projects Listed**, **Active Disputes**.
+* Routes:
+
+  * `/admin/verifications` (approve/reject with OCR extract preview + confidence)
+  * `/admin/users` (search/suspend/promote)
+  * `/admin/projects` (moderate/edit/hide)
+  * `/admin/analytics` (platform metrics; simple SQLite or Postgres views for KPIs)
+  * `/admin/settings` (domain allow‑list, feature flags)
+
+---
+
+## 5) Core Features
+
+1. **Auth & Onboarding**
+
+* Toggle between Student/Buyer flows. Validate email domain for Student signups.
+* After Student signup → ID Upload step → OCR → status **PENDING\_REVIEW**; limit to: create drafts, view marketplace; cannot list publicly until **APPROVED**.
+
+2. **Project Creation & Listing** (Student)
+
+* Rich form with Markdown editor for description; drag‑drop for cover image & attachments; skill tags; pricing; delivery time; optional team.
+* Draft/Publish workflow; preview page before listing.
+
+3. **Marketplace & Search** (Buyer)
+
+* Server‑side filtering, search by title/skills/university; sort by rating/new/price.
+* Favorites; recently viewed;
+
+4. **Purchases & Orders**
+
+* Stripe Checkout session creation; webhook to mark `Order.status` → `PAID`.
+* Order room with messaging placeholder (not realtime) and delivery file upload by Student.
+
+5. **Dashboards**
+
+* KPI cards with sparkline charts; tables with pagination; empty states; skeleton loaders.
+
+6. **Notifications**
+
+* Bell menu; server‑generated notifications for verification updates, order events.
+
+7. **Admin Verification Queue**
+
+* Display ID image, parsed OCR fields, confidence, and actions (Approve/Reject with notes). Update `StudentProfile.verificationStatus` accordingly and notify user.
+
+8. **Accessibility & i18n**
+
+* WCAG AA contrasts; keyboard navigation; use aria labels. Set up next‑intl scaffolding for future locales.
+
+---
+
+## 6) API & Server Actions
+
+* **REST endpoints** under `/api/*` with route handlers + Zod validation:
+
+  * `POST /api/auth/register-student` (domain check + create user + send verify email)
+  * `POST /api/student/verify-id` (file upload, OCR, create verification record)
+  * `POST /api/projects` | `PATCH /api/projects/[id]` | `GET /api/projects`
+  * `POST /api/orders` (create Stripe session) | `POST /api/stripe/webhook`
+  * `POST /api/favorites` | `DELETE /api/favorites/[id]`
+  * `GET /api/admin/verification-queue` | `POST /api/admin/verify/[studentId]`
+* **Server actions** for dashboard mutations (create project, toggle favorite, approve verification) with RBAC guards.
+
+---
+
+## 7) Middleware & Utilities
+
+* `middleware.ts`: protects `/student/*`, `/buyer/*`, `/admin/*` by role; sets security headers.
+* `lib/roles.ts`: `requireRole`, `hasRole`, `redirectByRole` helpers.
+* `lib/domainGate.ts`: validate student email suffix vs `ALLOWED_STUDENT_SUFFIXES`.
+* `lib/ocr.ts`: adapter interface with `tesseract` (default) and `textract` or `vision` implementations, selected by env keys.
+* `lib/stripe.ts`: lazy init client; mock when `STRIPE_SECRET_KEY` missing.
+
+---
+
+## 8) UI Components (shadcn/ui)
+
+* `AppShell` (Header with logo, role switcher, user menu; Sidebar per role).
+* `StatCard`, `SparklineChart` (Recharts), `DataTable` (generic with pagination/sort), `Badge`, `TagPicker`, `PriceInput`, `UploadDropzone`, `EmptyState`, `RoleGuard` wrapper.
+* Reusable `VerificationStatusPill` (Pending/Approved/Rejected).
+
+---
+
+## 9) Visual Polish Guidelines
+
+* Use **blue gradient** in headers/CTAs; soft‑white surfaces elsewhere.
+* Subtle Framer Motion fades/slides; respect `prefers-reduced-motion`.
+* 12‑column grid, generous spacing (32–48px gutters), rounded‑2xl, shadow‑md lg on hover.
+* Light & dark mode (optional); default light.
+
+---
+
+## 10) Seeds & Demo Flow
+
+* Seed 10 Student users (`alice@uni.edu`, etc.) with `APPROVED` profiles & demo projects.
+* Seed 6 Buyers and 3 Admins.
+* Provide a **demo walkthrough script** in README: login as Buyer, browse, favorite, purchase (mock/Stripe), then login as Admin to approve a new Student.
+
+---
+
+## 11) Env & Config
+
+Create `.env.example` with:
+
+```
+DATABASE_URL=
+NEXTAUTH_URL=
+NEXTAUTH_SECRET=
+ALLOWED_STUDENT_SUFFIXES=.edu,.ac.uk,.org
+UPLOADTHING_SECRET=
+CLOUDINARY_URL=
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
+RESEND_API_KEY=
+OCR_ENGINE=tesseract|textract|vision
+OCR_CONFIDENCE_THRESHOLD=0.65
+```
+
+App must **boot without any** external keys (mocked adapters).
+
+---
+
+## 12) README
+
+* Clear setup for Replit & local dev: install, env, migrate, seed, run.
+* Screenshots/GIFs of the three dashboards.
+* Security notes, tradeoffs, and where to plug real providers.
+
+---
+
+## 13) Deliverables
+
+* Complete Next.js app with Prisma models, migrations, seed script.
+* Fully implemented role‑gated dashboards (Student/Buyer/Admin) with listed routes and UI.
+* OCR pipeline + admin verification queue.
+* Marketplace browse + project detail + favorites + checkout (real or mocked).
+* Tests (unit + 2–3 Playwright e2e).
+* One‑command run: `pnpm i && pnpm db:push && pnpm seed && pnpm dev`.
+
+**Build now. If any ambiguity arises, pick the most robust, production‑grade default and proceed.**
