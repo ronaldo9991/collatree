@@ -62,9 +62,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         profile = await storage.getBuyerProfile(user.id);
       }
 
-      res.json({ 
-        user: { ...user, password: undefined }, 
-        profile 
+      // Save the session before responding
+      req.session.save((err: any) => {
+        if (err) {
+          return res.status(500).json({ message: "Session save failed" });
+        }
+
+        res.json({ 
+          user: { ...user, password: undefined }, 
+          profile 
+        });
       });
     } catch (error: any) {
       res.status(500).json({ message: error.message });
@@ -143,9 +150,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       req.session.userId = user.id;
       req.session.role = user.role;
 
-      res.json({ 
-        user: { ...user, password: undefined }, 
-        profile 
+      // Save the session before responding
+      req.session.save((err: any) => {
+        if (err) {
+          return res.status(500).json({ message: "Session save failed" });
+        }
+
+        res.json({ 
+          user: { ...user, password: undefined }, 
+          profile 
+        });
       });
     } catch (error: any) {
       res.status(400).json({ message: error.message });

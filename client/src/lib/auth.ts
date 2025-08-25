@@ -37,8 +37,9 @@ export function useLogin() {
       const response = await apiRequest("POST", "/api/auth/login", credentials);
       return response.json();
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/auth/me"] });
+    onSuccess: (data) => {
+      // Set the auth data directly in the cache instead of invalidating
+      queryClient.setQueryData(["/api/auth/me"], data);
     },
   });
 }
@@ -60,8 +61,9 @@ export function useRegister() {
       const response = await apiRequest("POST", "/api/auth/register", data);
       return response.json();
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/auth/me"] });
+    onSuccess: (data) => {
+      // Set the auth data directly in the cache instead of invalidating
+      queryClient.setQueryData(["/api/auth/me"], data);
     },
   });
 }
