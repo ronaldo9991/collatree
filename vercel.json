@@ -1,8 +1,17 @@
 {
   "version": 2,
-  "framework": null,
-  "installCommand": "npm ci --no-audit --no-fund",
-  "buildCommand": "npm run build",
+  "builds": [
+    {
+      "src": "server/index.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/server/index.ts"
+    }
+  ],
   "env": {
     "NODE_ENV": "production"
   }
