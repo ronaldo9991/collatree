@@ -1,6 +1,5 @@
 import express from "express";
 import { registerRoutes } from "../server/routes";
-import { serveStatic } from "../server/vite";
 
 const app = express();
 
@@ -9,16 +8,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Register API routes
-await registerRoutes(app);
-
-// Serve static files in production
-if (process.env.NODE_ENV === "production") {
-  serveStatic(app);
-} else {
-  // In development, serve a simple message
-  app.get("*", (req, res) => {
-    res.send("Development mode - use npm run dev for full functionality");
-  });
-}
+registerRoutes(app).then(() => {
+  // Serve static files in production
+  if (process.env.NODE_ENV === "production") {
+    // In production, serve static files from the built client
+    app.use(express.static("client/dist"));
+    app.get("*", (req, res) => {
+      res.sendFile("client/dist/index.html", { root: process.cwd() });
+    });
+  } else {
+    // In development, serve a simple message
+    app.get("*", (req, res) => {
+      res.send("Development mode - use npm run dev for full functionality");
+    });
+  }
+});
 
 export default app;
