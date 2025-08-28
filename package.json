@@ -10,14 +10,9 @@
     "dev:client": "cd client && npm run dev",
     "build": "npm run build:client",
     "build:client": "cd client && npm install && npm run build",
-    "start": "node server/index.ts",
-    "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio"
+    "start": "node server/index.ts"
   },
   "dependencies": {
-    "@neondatabase/serverless": "^0.9.0",
-    "better-sqlite3": "^9.4.3",
-    "drizzle-orm": "^0.32.1",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
     "react": "^18.3.1",
@@ -26,7 +21,6 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/better-sqlite3": "^7.6.9",
     "@types/express": "^5.0.0",
     "@types/express-session": "^1.18.0",
     "@types/node": "^22.10.2",
@@ -35,7 +29,6 @@
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
     "concurrently": "^9.1.0",
-    "drizzle-kit": "^0.32.1",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.14",
     "tsx": "^4.19.2",

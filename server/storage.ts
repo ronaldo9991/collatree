@@ -1,22 +1,160 @@
-import { 
-  type User, 
-  type InsertUser,
-  type StudentProfile,
-  type InsertStudentProfile,
-  type BuyerProfile,
-  type InsertBuyerProfile,
-  type Project,
-  type InsertProject,
-  type Order,
-  type InsertOrder,
-  type Favorite,
-  type InsertFavorite,
-  type Review,
-  type InsertReview,
-  type Notification,
-  type InsertNotification,
-} from "@shared/schema";
 import { randomUUID } from "crypto";
+
+// Type definitions
+export interface User {
+  id: string;
+  email: string;
+  password: string;
+  name: string;
+  role: "STUDENT" | "BUYER" | "ADMIN";
+  avatarUrl: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface InsertUser {
+  email: string;
+  password: string;
+  name: string;
+  role: "STUDENT" | "BUYER" | "ADMIN";
+  avatarUrl?: string | null;
+}
+
+export interface StudentProfile {
+  userId: string;
+  university: string;
+  studentId: string;
+  program: string;
+  verificationStatus: "PENDING" | "APPROVED" | "REJECTED";
+  verificationNotes: string | null;
+  idDocUrl: string | null;
+  selfieUrl: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface InsertStudentProfile {
+  userId: string;
+  university: string;
+  studentId: string;
+  program: string;
+  verificationStatus?: "PENDING" | "APPROVED" | "REJECTED";
+  verificationNotes?: string | null;
+  idDocUrl?: string | null;
+  selfieUrl?: string | null;
+}
+
+export interface BuyerProfile {
+  userId: string;
+  companyName: string | null;
+  website: string | null;
+  billingAddress: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface InsertBuyerProfile {
+  userId: string;
+  companyName?: string | null;
+  website?: string | null;
+  billingAddress?: string | null;
+}
+
+export interface Project {
+  id: string;
+  ownerId: string;
+  title: string;
+  description: string;
+  skills: string[];
+  tags: string[];
+  price: number;
+  deliveryTime: number;
+  revisions: number;
+  status: "DRAFT" | "LISTED" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED";
+  visibility: "PUBLIC" | "PRIVATE";
+  slug: string;
+  coverImageUrl: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface InsertProject {
+  ownerId: string;
+  title: string;
+  description: string;
+  skills: string[];
+  tags: string[];
+  price: number;
+  deliveryTime: number;
+  revisions?: number;
+  status?: "DRAFT" | "LISTED" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED";
+  visibility?: "PUBLIC" | "PRIVATE";
+  slug: string;
+  coverImageUrl?: string | null;
+}
+
+export interface Order {
+  id: string;
+  projectId: string;
+  buyerId: string;
+  studentId: string;
+  amount: number;
+  status: "PENDING" | "PAID" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED" | "REFUNDED";
+  stripeSessionId: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface InsertOrder {
+  projectId: string;
+  buyerId: string;
+  studentId: string;
+  amount: number;
+  status?: "PENDING" | "PAID" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED" | "REFUNDED";
+  stripeSessionId?: string | null;
+}
+
+export interface Favorite {
+  id: string;
+  buyerId: string;
+  projectId: string;
+  createdAt: Date;
+}
+
+export interface InsertFavorite {
+  buyerId: string;
+  projectId: string;
+}
+
+export interface Review {
+  id: string;
+  orderId: string;
+  rating: number;
+  comment: string;
+  createdAt: Date;
+}
+
+export interface InsertReview {
+  orderId: string;
+  rating: number;
+  comment: string;
+}
+
+export interface Notification {
+  id: string;
+  userId: string;
+  type: "ORDER_UPDATE" | "VERIFICATION_UPDATE" | "PROJECT_UPDATE" | "PAYMENT_RECEIVED";
+  payload: any;
+  readAt: Date | null;
+  createdAt: Date;
+}
+
+export interface InsertNotification {
+  userId: string;
+  type: "ORDER_UPDATE" | "VERIFICATION_UPDATE" | "PROJECT_UPDATE" | "PAYMENT_RECEIVED";
+  payload: any;
+  readAt?: Date | null;
+}
 
 export interface IStorage {
   // Users
@@ -101,391 +239,419 @@ export class MemStorage implements IStorage {
       role: "ADMIN",
       avatarUrl: null,
       createdAt: new Date(),
+      updatedAt: new Date(),
     };
     this.users.set(adminId, admin);
 
-    // Create student users
-    const studentUsers = [
-      {
-        email: "alex.kim@mit.edu",
-        name: "Alex Kim",
-        university: "MIT",
-        studentId: "STU-2024-001",
-        program: "Computer Science",
-        skills: ["React", "Node.js", "MongoDB", "JavaScript"],
-        projects: [
-          {
-            title: "Full-Stack React Application",
-            description: "I'll build a modern, responsive web application using React, Node.js, and MongoDB with authentication and payment integration.",
-            price: 299,
-            category: "Web Development",
-            deliveryTime: 8,
-          }
-        ]
-      },
-      {
-        email: "emma.rodriguez@stanford.edu",
-        name: "Emma Rodriguez",
-        university: "Stanford",
-        studentId: "STU-2024-002",
-        program: "Design",
-        skills: ["UI/UX", "Figma", "Branding", "Graphic Design"],
-        projects: [
-          {
-            title: "Brand Identity Package",
-            description: "Complete brand identity design including logo, business cards, letterhead, and brand guidelines for startups.",
-            price: 149,
-            category: "Design",
-            deliveryTime: 3,
-          }
-        ]
-      },
-      {
-        email: "david.park@berkeley.edu",
-        name: "David Park",
-        university: "UC Berkeley",
-        studentId: "STU-2024-003",
-        program: "Data Science",
-        skills: ["Python", "Machine Learning", "Tableau", "SQL"],
-        projects: [
-          {
-            title: "Data Analysis & Visualization",
-            description: "Comprehensive data analysis with Python, machine learning insights, and interactive dashboards using Tableau.",
-            price: 399,
-            category: "Data Science",
-            deliveryTime: 6,
-          }
-        ]
-      },
-      {
-        email: "sarah.chen@berkeley.edu",
-        name: "Sarah Chen",
-        university: "UC Berkeley",
-        studentId: "STU-2024-004",
-        program: "Computer Science",
-        skills: ["React", "TypeScript", "Node.js"],
-        projects: []
-      }
-    ];
+    // Create demo student
+    const studentId = randomUUID();
+    const student: User = {
+      id: studentId,
+      email: "student@university.edu",
+      password: "student123",
+      name: "John Student",
+      role: "STUDENT",
+      avatarUrl: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    this.users.set(studentId, student);
 
-    studentUsers.forEach((studentData, index) => {
-      const userId = randomUUID();
-      const user: User = {
-        id: userId,
-        email: studentData.email,
-        password: "password123",
-        name: studentData.name,
-        role: "STUDENT",
-        avatarUrl: null,
-        createdAt: new Date(),
-      };
-      this.users.set(userId, user);
+    const studentProfile: StudentProfile = {
+      userId: studentId,
+      university: "Tech University",
+      studentId: "STU-2024-001",
+      program: "Computer Science",
+      verificationStatus: "APPROVED",
+      verificationNotes: "Documents verified successfully",
+      idDocUrl: "https://example.com/id-doc.jpg",
+      selfieUrl: "https://example.com/selfie.jpg",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    this.studentProfiles.set(studentId, studentProfile);
 
-      const profileId = randomUUID();
-      const profile: StudentProfile = {
-        id: profileId,
-        userId,
-        university: studentData.university,
-        studentId: studentData.studentId,
-        program: studentData.program,
-        verificationStatus: index === 3 ? "PENDING" : "APPROVED",
-        verificationNotes: null,
-        idDocUrl: null,
-        selfieUrl: null,
-        createdAt: new Date(),
-      };
-      this.studentProfiles.set(userId, profile);
+    // Create demo buyer
+    const buyerId = randomUUID();
+    const buyer: User = {
+      id: buyerId,
+      email: "buyer@company.com",
+      password: "buyer123",
+      name: "Jane Buyer",
+      role: "BUYER",
+      avatarUrl: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    this.users.set(buyerId, buyer);
 
-      // Create projects for this student
-      studentData.projects.forEach((projectData) => {
-        const projectId = randomUUID();
-        const slug = projectData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-        const project: Project = {
-          id: projectId,
-          ownerId: userId,
-          title: projectData.title,
-          slug,
-          description: projectData.description,
-          skills: studentData.skills,
-          tags: [projectData.category],
-          price: projectData.price,
-          status: "LISTED",
-          visibility: "PUBLIC",
-          coverImageUrl: null,
-          deliveryTime: projectData.deliveryTime,
-          revisions: 3,
-          createdAt: new Date(),
-        };
-        this.projects.set(projectId, project);
-      });
-    });
+    const buyerProfile: BuyerProfile = {
+      userId: buyerId,
+      companyName: "Tech Solutions Inc",
+      website: "https://techsolutions.com",
+      billingAddress: "123 Business St, Tech City, TC 12345",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    this.buyerProfiles.set(buyerId, buyerProfile);
 
-    // Create buyer users
-    const buyerUsers = [
-      {
-        email: "buyer1@company.com",
-        name: "John Smith",
-        companyName: "Tech Startup Inc",
-      },
-      {
-        email: "buyer2@business.com",
-        name: "Jane Doe",
-        companyName: "Marketing Solutions",
-      }
-    ];
+    // Create demo projects
+    const project1Id = randomUUID();
+    const project1: Project = {
+      id: project1Id,
+      ownerId: studentId,
+      title: "Modern E-commerce Website",
+      description: "A full-stack e-commerce platform with React frontend and Node.js backend. Features include user authentication, product catalog, shopping cart, payment integration, and admin dashboard.",
+      skills: ["React", "Node.js", "MongoDB", "Stripe", "TypeScript"],
+      tags: ["web-development", "e-commerce", "full-stack"],
+      price: 500,
+      deliveryTime: 14,
+      revisions: 3,
+      status: "LISTED",
+      visibility: "PUBLIC",
+      slug: "modern-ecommerce-website",
+      coverImageUrl: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    this.projects.set(project1Id, project1);
 
-    buyerUsers.forEach((buyerData) => {
-      const userId = randomUUID();
-      const user: User = {
-        id: userId,
-        email: buyerData.email,
-        password: "password123",
-        name: buyerData.name,
-        role: "BUYER",
-        avatarUrl: null,
-        createdAt: new Date(),
-      };
-      this.users.set(userId, user);
+    const project2Id = randomUUID();
+    const project2: Project = {
+      id: project2Id,
+      ownerId: studentId,
+      title: "Mobile App for Task Management",
+      description: "A cross-platform mobile application for task and project management. Built with React Native, featuring real-time collaboration, push notifications, and offline support.",
+      skills: ["React Native", "Firebase", "Redux", "TypeScript", "Expo"],
+      tags: ["mobile-development", "task-management", "cross-platform"],
+      price: 800,
+      deliveryTime: 21,
+      revisions: 2,
+      status: "LISTED",
+      visibility: "PUBLIC",
+      slug: "mobile-task-management-app",
+      coverImageUrl: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    this.projects.set(project2Id, project2);
 
-      const profileId = randomUUID();
-      const profile: BuyerProfile = {
-        id: profileId,
-        userId,
-        companyName: buyerData.companyName,
-        website: null,
-        billingAddress: null,
-        createdAt: new Date(),
-      };
-      this.buyerProfiles.set(userId, profile);
-    });
+    const project3Id = randomUUID();
+    const project3: Project = {
+      id: project3Id,
+      ownerId: studentId,
+      title: "Data Analysis Dashboard",
+      description: "An interactive dashboard for data visualization and analysis. Built with Python, featuring machine learning models, real-time data processing, and beautiful charts.",
+      skills: ["Python", "Pandas", "Matplotlib", "Scikit-learn", "Flask"],
+      tags: ["data-science", "machine-learning", "visualization"],
+      price: 600,
+      deliveryTime: 18,
+      revisions: 3,
+      status: "LISTED",
+      visibility: "PUBLIC",
+      slug: "data-analysis-dashboard",
+      coverImageUrl: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    this.projects.set(project3Id, project3);
   }
 
-  // User methods
-  async getUser(id: string): Promise<User | undefined> {
+  // Users
+  async getUser(id: string) {
     return this.users.get(id);
   }
 
-  async getUserByEmail(email: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(user => user.email === email);
+  async getUserByEmail(email: string) {
+    const users = Array.from(this.users.values());
+    for (const user of users) {
+      if (user.email === email) {
+        return user;
+      }
+    }
+    return undefined;
   }
 
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { 
-      ...insertUser, 
-      id, 
-      role: insertUser.role || "STUDENT",
-      avatarUrl: insertUser.avatarUrl || null,
-      createdAt: new Date() 
+  async createUser(user: InsertUser) {
+    const newUser: User = {
+      id: randomUUID(),
+      ...user,
+      avatarUrl: user.avatarUrl || null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
-    this.users.set(id, user);
-    return user;
+    this.users.set(newUser.id, newUser);
+    return newUser;
   }
 
-  async updateUser(id: string, updates: Partial<User>): Promise<User> {
+  async updateUser(id: string, updates: Partial<User>) {
     const user = this.users.get(id);
-    if (!user) throw new Error("User not found");
-    const updatedUser = { ...user, ...updates } as User;
+    if (!user) {
+      throw new Error("User not found");
+    }
+    const updatedUser = { ...user, ...updates, updatedAt: new Date() };
     this.users.set(id, updatedUser);
     return updatedUser;
   }
 
-  // Student Profile methods
-  async getStudentProfile(userId: string): Promise<StudentProfile | undefined> {
+  // Student Profiles
+  async getStudentProfile(userId: string) {
     return this.studentProfiles.get(userId);
   }
 
-  async createStudentProfile(insertProfile: InsertStudentProfile): Promise<StudentProfile> {
-    const id = randomUUID();
-    const profile: StudentProfile = { 
-      ...insertProfile, 
-      id, 
-      verificationStatus: insertProfile.verificationStatus || "PENDING",
-      verificationNotes: insertProfile.verificationNotes || null,
-      idDocUrl: insertProfile.idDocUrl || null,
-      selfieUrl: insertProfile.selfieUrl || null,
-      createdAt: new Date() 
+  async createStudentProfile(profile: InsertStudentProfile) {
+    const newProfile: StudentProfile = {
+      ...profile,
+      verificationStatus: profile.verificationStatus || "PENDING",
+      verificationNotes: profile.verificationNotes || null,
+      idDocUrl: profile.idDocUrl || null,
+      selfieUrl: profile.selfieUrl || null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
-    this.studentProfiles.set(insertProfile.userId, profile);
-    return profile;
+    this.studentProfiles.set(profile.userId, newProfile);
+    return newProfile;
   }
 
-  async updateStudentProfile(userId: string, updates: Partial<StudentProfile>): Promise<StudentProfile> {
+  async updateStudentProfile(userId: string, updates: Partial<StudentProfile>) {
     const profile = this.studentProfiles.get(userId);
-    if (!profile) throw new Error("Student profile not found");
-    const updatedProfile = { ...profile, ...updates } as StudentProfile;
+    if (!profile) {
+      throw new Error("Student profile not found");
+    }
+    const updatedProfile = { ...profile, ...updates, updatedAt: new Date() };
     this.studentProfiles.set(userId, updatedProfile);
     return updatedProfile;
   }
 
-  async getPendingVerifications(): Promise<StudentProfile[]> {
-    return Array.from(this.studentProfiles.values())
-      .filter(profile => profile.verificationStatus === "PENDING");
+  async getPendingVerifications() {
+    return Array.from(this.studentProfiles.values()).filter(
+      (profile) => profile.verificationStatus === "PENDING"
+    );
   }
 
-  // Buyer Profile methods
-  async getBuyerProfile(userId: string): Promise<BuyerProfile | undefined> {
+  // Buyer Profiles
+  async getBuyerProfile(userId: string) {
     return this.buyerProfiles.get(userId);
   }
 
-  async createBuyerProfile(insertProfile: InsertBuyerProfile): Promise<BuyerProfile> {
-    const id = randomUUID();
-    const profile: BuyerProfile = { 
-      ...insertProfile, 
-      id, 
-      companyName: insertProfile.companyName || null,
-      website: insertProfile.website || null,
-      billingAddress: insertProfile.billingAddress || null,
-      createdAt: new Date() 
+  async createBuyerProfile(profile: InsertBuyerProfile) {
+    const newProfile: BuyerProfile = {
+      ...profile,
+      companyName: profile.companyName || null,
+      website: profile.website || null,
+      billingAddress: profile.billingAddress || null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
-    this.buyerProfiles.set(insertProfile.userId, profile);
-    return profile;
+    this.buyerProfiles.set(profile.userId, newProfile);
+    return newProfile;
   }
 
-  // Project methods
-  async getProject(id: string): Promise<Project | undefined> {
+  // Projects
+  async getProject(id: string) {
     return this.projects.get(id);
   }
 
-  async getProjectBySlug(slug: string): Promise<Project | undefined> {
-    return Array.from(this.projects.values()).find(project => project.slug === slug);
+  async getProjectBySlug(slug: string) {
+    const projects = Array.from(this.projects.values());
+    for (const project of projects) {
+      if (project.slug === slug) {
+        return project;
+      }
+    }
+    return undefined;
   }
 
-  async getProjects(filters?: { ownerId?: string; status?: string; limit?: number; offset?: number }): Promise<Project[]> {
+  async getProjects(filters?: { ownerId?: string; status?: string; limit?: number; offset?: number }) {
     let projects = Array.from(this.projects.values());
-    if (filters?.ownerId) projects = projects.filter(p => p.ownerId === filters.ownerId);
-    if (filters?.status) projects = projects.filter(p => p.status === filters.status);
+
+    if (filters?.ownerId) {
+      projects = projects.filter((p) => p.ownerId === filters.ownerId);
+    }
+
+    if (filters?.status) {
+      projects = projects.filter((p) => p.status === filters.status);
+    }
+
+    // Sort by creation date (newest first)
     projects.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-    if (filters?.offset) projects = projects.slice(filters.offset);
-    if (filters?.limit) projects = projects.slice(0, filters.limit);
+
+    if (filters?.offset) {
+      projects = projects.slice(filters.offset);
+    }
+
+    if (filters?.limit) {
+      projects = projects.slice(0, filters.limit);
+    }
+
     return projects;
   }
 
-  async createProject(insertProject: InsertProject): Promise<Project> {
-    const id = randomUUID();
-    const project: Project = { 
-      ...insertProject, 
-      id, 
-      status: insertProject.status || "DRAFT",
-      visibility: insertProject.visibility || "PUBLIC",
-      coverImageUrl: insertProject.coverImageUrl || null,
-      revisions: insertProject.revisions || 3,
-      skills: insertProject.skills || [],
-      tags: insertProject.tags || [],
-      createdAt: new Date() 
-    } as Project;
-    this.projects.set(id, project);
-    return project;
+  async createProject(project: InsertProject) {
+    const newProject: Project = {
+      id: randomUUID(),
+      ...project,
+      revisions: project.revisions || 3,
+      status: project.status || "DRAFT",
+      visibility: project.visibility || "PUBLIC",
+      coverImageUrl: project.coverImageUrl || null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    this.projects.set(newProject.id, newProject);
+    return newProject;
   }
 
-  async updateProject(id: string, updates: Partial<Project>): Promise<Project> {
+  async updateProject(id: string, updates: Partial<Project>) {
     const project = this.projects.get(id);
-    if (!project) throw new Error("Project not found");
-    const updatedProject = { ...project, ...updates } as Project;
+    if (!project) {
+      throw new Error("Project not found");
+    }
+    const updatedProject = { ...project, ...updates, updatedAt: new Date() };
     this.projects.set(id, updatedProject);
     return updatedProject;
   }
 
-  async searchProjects(query: string, _filters?: { category?: string; university?: string; priceRange?: string }): Promise<Project[]> {
-    let projects = Array.from(this.projects.values())
-      .filter(p => p.status === "LISTED" && p.visibility === "PUBLIC");
-    if (query) {
-      const lower = query.toLowerCase();
-      projects = projects.filter(p =>
-        p.title.toLowerCase().includes(lower) ||
-        p.description.toLowerCase().includes(lower) ||
-        p.skills.some(s => s.toLowerCase().includes(lower)) ||
-        p.tags.some(t => t.toLowerCase().includes(lower))
-      );
-    }
-    return projects.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  async searchProjects(query: string, _filters?: { category?: string; university?: string; priceRange?: string }) {
+    const projects = Array.from(this.projects.values());
+    const searchTerm = query.toLowerCase();
+
+    return projects.filter((project) => {
+      const titleMatch = project.title.toLowerCase().includes(searchTerm);
+      const descriptionMatch = project.description.toLowerCase().includes(searchTerm);
+      const skillsMatch = project.skills.some((skill: string) => skill.toLowerCase().includes(searchTerm));
+      const tagsMatch = project.tags.some((tag: string) => tag.toLowerCase().includes(searchTerm));
+
+      return titleMatch || descriptionMatch || skillsMatch || tagsMatch;
+    });
   }
 
   // Orders
-  async getOrder(id: string): Promise<Order | undefined> {
+  async getOrder(id: string) {
     return this.orders.get(id);
   }
 
-  async getOrders(filters?: { buyerId?: string; studentId?: string; status?: string }): Promise<Order[]> {
+  async getOrders(filters?: { buyerId?: string; studentId?: string; status?: string }) {
     let orders = Array.from(this.orders.values());
-    if (filters?.buyerId) orders = orders.filter(o => o.buyerId === filters.buyerId);
-    if (filters?.studentId) orders = orders.filter(o => o.studentId === filters.studentId);
-    if (filters?.status) orders = orders.filter(o => o.status === filters.status);
-    return orders.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+
+    if (filters?.buyerId) {
+      orders = orders.filter((o) => o.buyerId === filters.buyerId);
+    }
+
+    if (filters?.studentId) {
+      orders = orders.filter((o) => o.studentId === filters.studentId);
+    }
+
+    if (filters?.status) {
+      orders = orders.filter((o) => o.status === filters.status);
+    }
+
+    // Sort by creation date (newest first)
+    orders.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+
+    return orders;
   }
 
-  async createOrder(insertOrder: InsertOrder): Promise<Order> {
-    const id = randomUUID();
-    const order: Order = { 
-      ...insertOrder, 
-      id, 
-      status: insertOrder.status || "PENDING",
-      stripeSessionId: insertOrder.stripeSessionId || null,
-      createdAt: new Date() 
+  async createOrder(order: InsertOrder) {
+    const newOrder: Order = {
+      id: randomUUID(),
+      ...order,
+      status: order.status || "PENDING",
+      stripeSessionId: order.stripeSessionId || null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
-    this.orders.set(id, order);
-    return order;
+    this.orders.set(newOrder.id, newOrder);
+    return newOrder;
   }
 
-  async updateOrder(id: string, updates: Partial<Order>): Promise<Order> {
+  async updateOrder(id: string, updates: Partial<Order>) {
     const order = this.orders.get(id);
-    if (!order) throw new Error("Order not found");
-    const updatedOrder = { ...order, ...updates } as Order;
+    if (!order) {
+      throw new Error("Order not found");
+    }
+    const updatedOrder = { ...order, ...updates, updatedAt: new Date() };
     this.orders.set(id, updatedOrder);
     return updatedOrder;
   }
 
   // Favorites
-  async getFavorites(buyerId: string): Promise<Favorite[]> {
-    return Array.from(this.favorites.values()).filter(f => f.buyerId === buyerId);
+  async getFavorites(buyerId: string) {
+    return Array.from(this.favorites.values()).filter((f) => f.buyerId === buyerId);
   }
 
-  async createFavorite(insertFavorite: InsertFavorite): Promise<Favorite> {
-    const id = randomUUID();
-    const favorite: Favorite = { ...insertFavorite, id, createdAt: new Date() } as Favorite;
-    this.favorites.set(id, favorite);
-    return favorite;
+  async createFavorite(favorite: InsertFavorite) {
+    const newFavorite: Favorite = {
+      id: randomUUID(),
+      ...favorite,
+      createdAt: new Date(),
+    };
+    this.favorites.set(newFavorite.id, newFavorite);
+    return newFavorite;
   }
 
-  async deleteFavorite(buyerId: string, projectId: string): Promise<void> {
-    const favorite = Array.from(this.favorites.entries())
-      .find(([_, f]) => f.buyerId === buyerId && f.projectId === projectId);
-    if (favorite) this.favorites.delete(favorite[0]);
+  async deleteFavorite(buyerId: string, projectId: string) {
+    const favorites = Array.from(this.favorites.entries());
+    for (const [id, favorite] of favorites) {
+      if (favorite.buyerId === buyerId && favorite.projectId === projectId) {
+        this.favorites.delete(id);
+        return;
+      }
+    }
   }
 
-  async isFavorite(buyerId: string, projectId: string): Promise<boolean> {
-    return Array.from(this.favorites.values()).some(f => f.buyerId === buyerId && f.projectId === projectId);
+  async isFavorite(buyerId: string, projectId: string) {
+    const favorites = Array.from(this.favorites.values());
+    for (const favorite of favorites) {
+      if (favorite.buyerId === buyerId && favorite.projectId === projectId) {
+        return true;
+      }
+    }
+    return false;
   }
 
   // Reviews
-  async getReviewsByProject(projectId: string): Promise<Review[]> {
-    return Array.from(this.reviews.values()).filter(r => {
-      const order = Array.from(this.orders.values()).find(o => o.id === r.orderId);
-      return order?.projectId === projectId;
-    });
+  async getReviewsByProject(projectId: string) {
+    const reviews: Review[] = [];
+    const reviewsList = Array.from(this.reviews.values());
+    for (const review of reviewsList) {
+      const order = this.orders.get(review.orderId);
+      if (order && order.projectId === projectId) {
+        reviews.push(review);
+      }
+    }
+    return reviews.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   }
 
-  async createReview(insertReview: InsertReview): Promise<Review> {
-    const id = randomUUID();
-    const review: Review = { ...insertReview, id, comment: insertReview.comment || null, createdAt: new Date() } as Review;
-    this.reviews.set(id, review);
-    return review;
+  async createReview(review: InsertReview) {
+    const newReview: Review = {
+      id: randomUUID(),
+      ...review,
+      createdAt: new Date(),
+    };
+    this.reviews.set(newReview.id, newReview);
+    return newReview;
   }
 
   // Notifications
-  async getNotifications(userId: string): Promise<Notification[]> {
-    return Array.from(this.notifications.values()).filter(n => n.userId === userId)
+  async getNotifications(userId: string) {
+    return Array.from(this.notifications.values())
+      .filter((n) => n.userId === userId)
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   }
 
-  async createNotification(insertNotification: InsertNotification): Promise<Notification> {
-    const id = randomUUID();
-    const notification: Notification = { ...insertNotification, id, readAt: null, createdAt: new Date() } as Notification;
-    this.notifications.set(id, notification);
-    return notification;
+  async createNotification(notification: InsertNotification) {
+    const newNotification: Notification = {
+      id: randomUUID(),
+      ...notification,
+      readAt: notification.readAt || null,
+      createdAt: new Date(),
+    };
+    this.notifications.set(newNotification.id, newNotification);
+    return newNotification;
   }
 
-  async markNotificationRead(id: string): Promise<void> {
+  async markNotificationRead(id: string) {
     const notification = this.notifications.get(id);
     if (notification) {
       notification.readAt = new Date();
