@@ -65,6 +65,7 @@ export interface IStorage {
   markNotificationRead(id: string): Promise<void>;
 }
 
+// In-memory implementation
 export class MemStorage implements IStorage {
   private users: Map<string, User>;
   private studentProfiles: Map<string, StudentProfile>;
@@ -187,7 +188,7 @@ export class MemStorage implements IStorage {
         university: studentData.university,
         studentId: studentData.studentId,
         program: studentData.program,
-        verificationStatus: index === 3 ? "PENDING" : "APPROVED", // Last one pending for demo
+        verificationStatus: index === 3 ? "PENDING" : "APPROVED",
         verificationNotes: null,
         idDocUrl: null,
         selfieUrl: null,
@@ -284,8 +285,7 @@ export class MemStorage implements IStorage {
   async updateUser(id: string, updates: Partial<User>): Promise<User> {
     const user = this.users.get(id);
     if (!user) throw new Error("User not found");
-    
-    const updatedUser = { ...user, ...updates };
+    const updatedUser = { ...user, ...updates } as User;
     this.users.set(id, updatedUser);
     return updatedUser;
   }
@@ -313,8 +313,7 @@ export class MemStorage implements IStorage {
   async updateStudentProfile(userId: string, updates: Partial<StudentProfile>): Promise<StudentProfile> {
     const profile = this.studentProfiles.get(userId);
     if (!profile) throw new Error("Student profile not found");
-    
-    const updatedProfile = { ...profile, ...updates };
+    const updatedProfile = { ...profile, ...updates } as StudentProfile;
     this.studentProfiles.set(userId, updatedProfile);
     return updatedProfile;
   }
@@ -354,25 +353,11 @@ export class MemStorage implements IStorage {
 
   async getProjects(filters?: { ownerId?: string; status?: string; limit?: number; offset?: number }): Promise<Project[]> {
     let projects = Array.from(this.projects.values());
-    
-    if (filters?.ownerId) {
-      projects = projects.filter(p => p.ownerId === filters.ownerId);
-    }
-    
-    if (filters?.status) {
-      projects = projects.filter(p => p.status === filters.status);
-    }
-    
+    if (filters?.ownerId) projects = projects.filter(p => p.ownerId === filters.ownerId);
+    if (filters?.status) projects = projects.filter(p => p.status === filters.status);
     projects.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-    
-    if (filters?.offset) {
-      projects = projects.slice(filters.offset);
-    }
-    
-    if (filters?.limit) {
-      projects = projects.slice(0, filters.limit);
-    }
-    
+    if (filters?.offset) projects = projects.slice(filters.offset);
+    if (filters?.limit) projects = projects.slice(0, filters.limit);
     return projects;
   }
 
@@ -385,8 +370,10 @@ export class MemStorage implements IStorage {
       visibility: insertProject.visibility || "PUBLIC",
       coverImageUrl: insertProject.coverImageUrl || null,
       revisions: insertProject.revisions || 3,
+      skills: insertProject.skills || [],
+      tags: insertProject.tags || [],
       createdAt: new Date() 
-    };
+    } as Project;
     this.projects.set(id, project);
     return project;
   }
@@ -394,53 +381,36 @@ export class MemStorage implements IStorage {
   async updateProject(id: string, updates: Partial<Project>): Promise<Project> {
     const project = this.projects.get(id);
     if (!project) throw new Error("Project not found");
-    
-    const updatedProject = { ...project, ...updates };
+    const updatedProject = { ...project, ...updates } as Project;
     this.projects.set(id, updatedProject);
     return updatedProject;
   }
 
-  async searchProjects(query: string, filters?: { category?: string; university?: string; priceRange?: string }): Promise<Project[]> {
+  async searchProjects(query: string, _filters?: { category?: string; university?: string; priceRange?: string }): Promise<Project[]> {
     let projects = Array.from(this.projects.values())
       .filter(p => p.status === "LISTED" && p.visibility === "PUBLIC");
-    
     if (query) {
-      const lowerQuery = query.toLowerCase();
-      projects = projects.filter(p => 
-        p.title.toLowerCase().includes(lowerQuery) ||
-        p.description.toLowerCase().includes(lowerQuery) ||
-        p.skills.some(skill => skill.toLowerCase().includes(lowerQuery)) ||
-        p.tags.some(tag => tag.toLowerCase().includes(lowerQuery))
+      const lower = query.toLowerCase();
+      projects = projects.filter(p =>
+        p.title.toLowerCase().includes(lower) ||
+        p.description.toLowerCase().includes(lower) ||
+        p.skills.some(s => s.toLowerCase().includes(lower)) ||
+        p.tags.some(t => t.toLowerCase().includes(lower))
       );
     }
-    
-    if (filters?.category && filters.category !== "All Categories") {
-      projects = projects.filter(p => p.tags.includes(filters.category!));
-    }
-    
     return projects.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   }
 
-  // Order methods
+  // Orders
   async getOrder(id: string): Promise<Order | undefined> {
     return this.orders.get(id);
   }
 
   async getOrders(filters?: { buyerId?: string; studentId?: string; status?: string }): Promise<Order[]> {
     let orders = Array.from(this.orders.values());
-    
-    if (filters?.buyerId) {
-      orders = orders.filter(o => o.buyerId === filters.buyerId);
-    }
-    
-    if (filters?.studentId) {
-      orders = orders.filter(o => o.studentId === filters.studentId);
-    }
-    
-    if (filters?.status) {
-      orders = orders.filter(o => o.status === filters.status);
-    }
-    
+    if (filters?.buyerId) orders = orders.filter(o => o.buyerId === filters.buyerId);
+    if (filters?.studentId) orders = orders.filter(o => o.studentId === filters.studentId);
+    if (filters?.status) orders = orders.filter(o => o.status === filters.status);
     return orders.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   }
 
@@ -460,25 +430,19 @@ export class MemStorage implements IStorage {
   async updateOrder(id: string, updates: Partial<Order>): Promise<Order> {
     const order = this.orders.get(id);
     if (!order) throw new Error("Order not found");
-    
-    const updatedOrder = { ...order, ...updates };
+    const updatedOrder = { ...order, ...updates } as Order;
     this.orders.set(id, updatedOrder);
     return updatedOrder;
   }
 
-  // Favorite methods
+  // Favorites
   async getFavorites(buyerId: string): Promise<Favorite[]> {
-    return Array.from(this.favorites.values())
-      .filter(f => f.buyerId === buyerId);
+    return Array.from(this.favorites.values()).filter(f => f.buyerId === buyerId);
   }
 
   async createFavorite(insertFavorite: InsertFavorite): Promise<Favorite> {
     const id = randomUUID();
-    const favorite: Favorite = { 
-      ...insertFavorite, 
-      id, 
-      createdAt: new Date() 
-    };
+    const favorite: Favorite = { ...insertFavorite, id, createdAt: new Date() } as Favorite;
     this.favorites.set(id, favorite);
     return favorite;
   }
@@ -486,54 +450,37 @@ export class MemStorage implements IStorage {
   async deleteFavorite(buyerId: string, projectId: string): Promise<void> {
     const favorite = Array.from(this.favorites.entries())
       .find(([_, f]) => f.buyerId === buyerId && f.projectId === projectId);
-    
-    if (favorite) {
-      this.favorites.delete(favorite[0]);
-    }
+    if (favorite) this.favorites.delete(favorite[0]);
   }
 
   async isFavorite(buyerId: string, projectId: string): Promise<boolean> {
-    return Array.from(this.favorites.values())
-      .some(f => f.buyerId === buyerId && f.projectId === projectId);
+    return Array.from(this.favorites.values()).some(f => f.buyerId === buyerId && f.projectId === projectId);
   }
 
-  // Review methods
+  // Reviews
   async getReviewsByProject(projectId: string): Promise<Review[]> {
-    return Array.from(this.reviews.values())
-      .filter(r => {
-        const order = Array.from(this.orders.values())
-          .find(o => o.id === r.orderId);
-        return order?.projectId === projectId;
-      });
+    return Array.from(this.reviews.values()).filter(r => {
+      const order = Array.from(this.orders.values()).find(o => o.id === r.orderId);
+      return order?.projectId === projectId;
+    });
   }
 
   async createReview(insertReview: InsertReview): Promise<Review> {
     const id = randomUUID();
-    const review: Review = { 
-      ...insertReview, 
-      id, 
-      comment: insertReview.comment || null,
-      createdAt: new Date() 
-    };
+    const review: Review = { ...insertReview, id, comment: insertReview.comment || null, createdAt: new Date() } as Review;
     this.reviews.set(id, review);
     return review;
   }
 
-  // Notification methods
+  // Notifications
   async getNotifications(userId: string): Promise<Notification[]> {
-    return Array.from(this.notifications.values())
-      .filter(n => n.userId === userId)
+    return Array.from(this.notifications.values()).filter(n => n.userId === userId)
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   }
 
   async createNotification(insertNotification: InsertNotification): Promise<Notification> {
     const id = randomUUID();
-    const notification: Notification = { 
-      ...insertNotification, 
-      id, 
-      readAt: null,
-      createdAt: new Date() 
-    };
+    const notification: Notification = { ...insertNotification, id, readAt: null, createdAt: new Date() } as Notification;
     this.notifications.set(id, notification);
     return notification;
   }
@@ -547,4 +494,5 @@ export class MemStorage implements IStorage {
   }
 }
 
+// Export the storage instance
 export const storage = new MemStorage();
