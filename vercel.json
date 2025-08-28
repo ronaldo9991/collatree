@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "framework": null,
+  "installCommand": "npm ci --no-audit --no-fund",
+  "buildCommand": "npm run db:push && npm run build",
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
