@@ -1,5 +1,4 @@
 import type { Express } from "express";
-import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { z } from "zod";
 import session from "express-session";
@@ -12,7 +11,7 @@ declare module "express-session" {
   }
 }
 
-export async function registerRoutes(app: Express): Promise<Server> {
+export async function registerRoutes(app: Express): Promise<Express> {
   // Session middleware
   app.use(session({
     secret: process.env.SESSION_SECRET || 'collabotree-secret',
@@ -578,6 +577,5 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  const httpServer = createServer(app);
-  return httpServer;
+  return app;
 }
