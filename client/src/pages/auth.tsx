@@ -130,7 +130,7 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+    <div className="bg-white p-6">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
@@ -201,6 +201,9 @@ export default function Auth() {
                   >
                     {login.isPending ? "Logging in..." : "Login"}
                   </Button>
+                  <div className="text-center">
+                    <button type="button" className="text-sm text-blue-600 hover:underline">Forgot password?</button>
+                  </div>
                 </form>
 
                 {/* Demo credentials */}

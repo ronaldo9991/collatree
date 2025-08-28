@@ -11,6 +11,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { useAuth, useLogout } from "@/lib/auth";
 import { Link, useLocation } from "wouter";
+import { useState } from "react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import Auth from "@/pages/auth";
 
 interface NavHeaderProps {
   onRoleChange?: (role: "STUDENT" | "BUYER" | "ADMIN") => void;
@@ -21,6 +24,7 @@ export function NavHeader({ onRoleChange, currentRole }: NavHeaderProps) {
   const { data: authData } = useAuth();
   const logout = useLogout();
   const [, setLocation] = useLocation();
+  const [authOpen, setAuthOpen] = useState(false);
 
   const handleLogout = () => {
     logout.mutate(undefined, {
@@ -50,29 +54,29 @@ export function NavHeader({ onRoleChange, currentRole }: NavHeaderProps) {
 
             {/* Navigation Links */}
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#how-it-works" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
-                How it Works
-              </a>
-              <a href="#featured-projects" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
-                Featured Projects
-              </a>
-              <a href="#support" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
-                Support
-              </a>
+              <Link href="/projects" className="text-gray-600 hover:text-blue-600 font-medium transition-colors" data-testid="link-projects">
+                Projects
+              </Link>
+              <Link href="/about" className="text-gray-600 hover:text-blue-600 font-medium transition-colors" data-testid="link-about">
+                About Us
+              </Link>
+              <Link href="/contact" className="text-gray-600 hover:text-blue-600 font-medium transition-colors" data-testid="link-contact">
+                Contact
+              </Link>
             </div>
 
             {/* Login Button */}
             <div className="flex items-center space-x-4">
               <Button 
                 variant="outline" 
-                onClick={() => setLocation("/auth")}
+                onClick={() => setAuthOpen(true)}
                 data-testid="button-login"
                 className="rounded-xl"
               >
                 Login
               </Button>
               <Button 
-                onClick={() => setLocation("/auth")}
+                onClick={() => setAuthOpen(true)}
                 data-testid="button-signup"
                 className="bg-brand-gradient rounded-xl"
               >
@@ -81,6 +85,11 @@ export function NavHeader({ onRoleChange, currentRole }: NavHeaderProps) {
             </div>
           </div>
         </div>
+        <Dialog open={authOpen} onOpenChange={setAuthOpen}>
+          <DialogContent className="p-0 max-w-md w-full rounded-2xl overflow-hidden">
+            <Auth />
+          </DialogContent>
+        </Dialog>
       </nav>
     );
   }
@@ -101,15 +110,15 @@ export function NavHeader({ onRoleChange, currentRole }: NavHeaderProps) {
 
           {/* Navigation Links */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="/marketplace" className="text-gray-600 hover:text-blue-600 font-medium transition-colors" data-testid="link-marketplace">
-              Marketplace
+            <Link href="/projects" className="text-gray-600 hover:text-blue-600 font-medium transition-colors" data-testid="link-projects">
+              Projects
             </Link>
-            <a href="#" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
-              How it Works
-            </a>
-            <a href="#" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
-              Support
-            </a>
+            <Link href="/about" className="text-gray-600 hover:text-blue-600 font-medium transition-colors" data-testid="link-about">
+              About Us
+            </Link>
+            <Link href="/contact" className="text-gray-600 hover:text-blue-600 font-medium transition-colors" data-testid="link-contact">
+              Contact
+            </Link>
           </div>
 
           {/* User Menu & Role Switcher */}

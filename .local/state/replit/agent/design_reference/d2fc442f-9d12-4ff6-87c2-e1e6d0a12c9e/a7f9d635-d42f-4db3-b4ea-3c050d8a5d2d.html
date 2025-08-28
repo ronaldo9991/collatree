@@ -1,0 +1,1279 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CollaboTree - Student-Only Freelancing Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        blue: {
+                            50: '#E6F0FB',
+                            100: '#D3E8FA',
+                            200: '#A8CCF5',
+                            300: '#7FB3EF',
+                            400: '#4F97EA',
+                            500: '#3B82F6',
+                            600: '#2E6BD1',
+                            700: '#2052A8',
+                            800: '#173C80',
+                            900: '#102B5C'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    },
+                    lineHeight: {
+                        'relaxed-custom': '1.65'
+                    },
+                    backgroundImage: {
+                        'brand-gradient': 'linear-gradient(135deg, #4F97EA, #2052A8)'
+                    }
+                }
+            }
+        };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 font-sans leading-relaxed-custom">
+    <!-- Navigation Header -->
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-brand-gradient rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tree text-white text-sm"></i>
+                    </div>
+                    <span class="font-bold text-xl text-gray-900 tracking-tight">CollaboTree</span>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Marketplace</a>
+                    <a href="#" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">How it Works</a>
+                    <a href="#" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Support</a>
+                </div>
+
+                <!-- User Menu & Role Switcher -->
+                <div class="flex items-center space-x-4">
+                    <!-- Role Switcher -->
+                    <div class="hidden lg:flex bg-gray-100 rounded-xl p-1">
+                        <button id="studentRole" class="px-4 py-2 rounded-lg text-sm font-medium bg-brand-gradient text-white transition-all">
+                            Student
+                        </button>
+                        <button id="buyerRole" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-blue-600 transition-all">
+                            Buyer
+                        </button>
+                        <button id="adminRole" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-blue-600 transition-all">
+                            Admin
+                        </button>
+                    </div>
+
+                    <!-- Notifications -->
+                    <div class="relative">
+                        <button class="p-2 text-gray-600 hover:text-blue-600 transition-colors">
+                            <i class="fas fa-bell text-lg"></i>
+                            <span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
+                        </button>
+                    </div>
+
+                    <!-- User Avatar -->
+                    <div class="flex items-center space-x-2">
+                        <!-- Profile photo of a young student with backpack and books -->
+                        <img src="https://pixabay.com/get/ga3704291825228f23e425ba6fd44f61de1671ad1d6b64cf88bb9408fc261e07c172cb3456eb71de37511a7c0a7d1b5d1c269d7a9cf70fb8d0aef5f936de00583_1280.jpg" 
+                             alt="Student Profile" 
+                             class="w-8 h-8 rounded-full object-cover">
+                        <span class="hidden md:block text-sm font-medium text-gray-900">Sarah Chen</span>
+                        <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <div id="mainContent">
+        <!-- Landing/Home Page -->
+        <div id="landingPage" class="page-content">
+            <!-- Hero Section -->
+            <section class="bg-brand-gradient py-20">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <h1 class="text-5xl md:text-6xl font-bold text-white mb-6 tracking-tight">
+                        Student-Only <br>Freelancing Marketplace
+                    </h1>
+                    <p class="text-xl text-blue-100 mb-12 max-w-3xl mx-auto leading-relaxed">
+                        Connect with verified students worldwide. Hire talented students for your projects or showcase your skills to global buyers.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+                        <button class="bg-white text-blue-700 px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-blue-50 transition-all shadow-lg">
+                            I'm a Student
+                        </button>
+                        <button class="bg-blue-800 text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-blue-900 transition-all border border-blue-600">
+                            I'm a Buyer
+                        </button>
+                    </div>
+
+                    <!-- Live Search Bar -->
+                    <div class="max-w-2xl mx-auto">
+                        <div class="bg-white rounded-2xl p-6 shadow-xl">
+                            <div class="flex items-center space-x-4">
+                                <i class="fas fa-search text-gray-400 text-lg"></i>
+                                <input type="text" placeholder="Search projects, skills, or universities..." 
+                                       class="flex-1 text-lg outline-none text-gray-700">
+                                <button class="bg-blue-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-blue-700 transition-colors">
+                                    Search
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Featured Projects -->
+            <section class="py-20 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl font-bold text-gray-900 mb-4 tracking-tight">Featured Student Projects</h2>
+                        <p class="text-xl text-gray-600 max-w-2xl mx-auto">Discover amazing work from verified students at top universities</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Project Card 1 -->
+                        <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
+                            <!-- Modern web development workspace with laptop and code -->
+                            <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=240" 
+                                 alt="Web Development Project" 
+                                 class="w-full h-48 object-cover">
+                            <div class="p-6">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">Web Development</span>
+                                    <span class="text-blue-600 font-bold text-lg">$299</span>
+                                </div>
+                                <h3 class="font-bold text-lg text-gray-900 mb-2">Full-Stack React Application</h3>
+                                <p class="text-gray-600 mb-4 text-sm leading-relaxed">I'll build a modern, responsive web application using React, Node.js, and MongoDB with authentication and payment integration.</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-2">
+                                        <!-- Profile photo of a young computer science student -->
+                                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=32&h=32" 
+                                             alt="Student Profile" 
+                                             class="w-8 h-8 rounded-full object-cover">
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-900">Alex Kim</p>
+                                            <p class="text-xs text-gray-500">MIT</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-1">
+                                        <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                        <span class="text-sm font-medium text-gray-700">4.9</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project Card 2 -->
+                        <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
+                            <!-- Modern graphic design workspace with design tools -->
+                            <img src="https://images.unsplash.com/photo-1558655146-9f40138edfeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=240" 
+                                 alt="Graphic Design Project" 
+                                 class="w-full h-48 object-cover">
+                            <div class="p-6">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm font-medium">Design</span>
+                                    <span class="text-blue-600 font-bold text-lg">$149</span>
+                                </div>
+                                <h3 class="font-bold text-lg text-gray-900 mb-2">Brand Identity Package</h3>
+                                <p class="text-gray-600 mb-4 text-sm leading-relaxed">Complete brand identity design including logo, business cards, letterhead, and brand guidelines for startups.</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-2">
+                                        <!-- Profile photo of a young female design student -->
+                                        <img src="https://pixabay.com/get/g6ce7ec7dbfff27e1ee209b0a47876d6380c4ccc2ac78feaaadb4c16f40fbed72c247119905740c19f67c77b914317d500c0b3f5453a8b1e54c05366ee0b73b74_1280.jpg" 
+                                             alt="Student Profile" 
+                                             class="w-8 h-8 rounded-full object-cover">
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-900">Emma Rodriguez</p>
+                                            <p class="text-xs text-gray-500">Stanford</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-1">
+                                        <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                        <span class="text-sm font-medium text-gray-700">5.0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project Card 3 -->
+                        <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
+                            <!-- Data analysis workspace with charts and graphs -->
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=240" 
+                                 alt="Data Analysis Project" 
+                                 class="w-full h-48 object-cover">
+                            <div class="p-6">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">Data Science</span>
+                                    <span class="text-blue-600 font-bold text-lg">$399</span>
+                                </div>
+                                <h3 class="font-bold text-lg text-gray-900 mb-2">Data Analysis & Visualization</h3>
+                                <p class="text-gray-600 mb-4 text-sm leading-relaxed">Comprehensive data analysis with Python, machine learning insights, and interactive dashboards using Tableau.</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-2">
+                                        <!-- Profile photo of a young male data science student -->
+                                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=32&h=32" 
+                                             alt="Student Profile" 
+                                             class="w-8 h-8 rounded-full object-cover">
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-900">David Park</p>
+                                            <p class="text-xs text-gray-500">UC Berkeley</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-1">
+                                        <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                        <span class="text-sm font-medium text-gray-700">4.8</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-12">
+                        <button class="bg-blue-600 text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-blue-700 transition-colors">
+                            View All Projects
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Student Dashboard -->
+        <div id="studentDashboard" class="page-content hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <!-- Dashboard Header -->
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Student Dashboard</h1>
+                    <p class="text-gray-600">Manage your projects, earnings, and profile</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-dollar-sign text-green-600 text-lg"></i>
+                            </div>
+                            <span class="text-xs text-green-600 bg-green-100 px-2 py-1 rounded-full">+12%</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-1">$2,450</h3>
+                        <p class="text-gray-600 text-sm">Total Earnings</p>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-briefcase text-blue-600 text-lg"></i>
+                            </div>
+                            <span class="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded-full">+2</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-1">8</h3>
+                        <p class="text-gray-600 text-sm">Active Orders</p>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-project-diagram text-purple-600 text-lg"></i>
+                            </div>
+                            <span class="text-xs text-purple-600 bg-purple-100 px-2 py-1 rounded-full">12</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-1">24</h3>
+                        <p class="text-gray-600 text-sm">My Projects</p>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-users text-orange-600 text-lg"></i>
+                            </div>
+                            <span class="text-xs text-orange-600 bg-orange-100 px-2 py-1 rounded-full">3</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-1">5</h3>
+                        <p class="text-gray-600 text-sm">Team Invites</p>
+                    </div>
+                </div>
+
+                <!-- Main Content Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Recent Projects -->
+                    <div class="lg:col-span-2">
+                        <div class="bg-white rounded-2xl shadow-md border border-gray-100">
+                            <div class="p-6 border-b border-gray-100">
+                                <div class="flex items-center justify-between">
+                                    <h2 class="text-xl font-bold text-gray-900">My Projects</h2>
+                                    <button class="bg-blue-600 text-white px-4 py-2 rounded-xl font-medium hover:bg-blue-700 transition-colors">
+                                        <i class="fas fa-plus mr-2"></i>Create New
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <!-- Project Item -->
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl mb-4">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                                            <i class="fas fa-code text-blue-600"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-semibold text-gray-900">React E-commerce Dashboard</h3>
+                                            <p class="text-sm text-gray-600">Web Development • $299</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-3">
+                                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-medium">Active</span>
+                                        <button class="text-gray-400 hover:text-gray-600">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- More project items... -->
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl mb-4">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                                            <i class="fas fa-paint-brush text-purple-600"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-semibold text-gray-900">Mobile App UI Design</h3>
+                                            <p class="text-sm text-gray-600">Design • $199</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-3">
+                                        <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-medium">In Review</span>
+                                        <button class="text-gray-400 hover:text-gray-600">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                                            <i class="fas fa-chart-bar text-green-600"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-semibold text-gray-900">Data Analysis Report</h3>
+                                            <p class="text-sm text-gray-600">Data Science • $399</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-3">
+                                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-medium">Completed</span>
+                                        <button class="text-gray-400 hover:text-gray-600">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Verification & Quick Actions -->
+                    <div class="space-y-6">
+                        <!-- Student Verification Status -->
+                        <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-6">
+                            <h2 class="text-lg font-bold text-gray-900 mb-4">Verification Status</h2>
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-check text-green-600 text-xl"></i>
+                                </div>
+                                <span class="bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium">Verified Student</span>
+                                <p class="text-gray-600 text-sm mt-2">Stanford University</p>
+                                <p class="text-gray-500 text-xs mt-1">ID: STU-2024-001234</p>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-6">
+                            <h2 class="text-lg font-bold text-gray-900 mb-4">Quick Actions</h2>
+                            <div class="space-y-3">
+                                <button class="w-full bg-blue-50 text-blue-700 p-3 rounded-xl font-medium hover:bg-blue-100 transition-colors text-left">
+                                    <i class="fas fa-plus mr-3"></i>Create New Project
+                                </button>
+                                <button class="w-full bg-gray-50 text-gray-700 p-3 rounded-xl font-medium hover:bg-gray-100 transition-colors text-left">
+                                    <i class="fas fa-users mr-3"></i>Manage Teams
+                                </button>
+                                <button class="w-full bg-gray-50 text-gray-700 p-3 rounded-xl font-medium hover:bg-gray-100 transition-colors text-left">
+                                    <i class="fas fa-chart-line mr-3"></i>View Earnings
+                                </button>
+                                <button class="w-full bg-gray-50 text-gray-700 p-3 rounded-xl font-medium hover:bg-gray-100 transition-colors text-left">
+                                    <i class="fas fa-cog mr-3"></i>Account Settings
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Buyer Dashboard -->
+        <div id="buyerDashboard" class="page-content hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <!-- Dashboard Header -->
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Buyer Dashboard</h1>
+                    <p class="text-gray-600">Browse projects and manage your purchases</p>
+                </div>
+
+                <!-- Marketplace Filters -->
+                <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-6 mb-8">
+                    <div class="flex flex-wrap items-center gap-4">
+                        <div class="flex-1 min-w-64">
+                            <div class="relative">
+                                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                <input type="text" placeholder="Search projects, skills..." 
+                                       class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none">
+                            </div>
+                        </div>
+                        
+                        <select class="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none">
+                            <option>All Categories</option>
+                            <option>Web Development</option>
+                            <option>Design</option>
+                            <option>Data Science</option>
+                            <option>Mobile Development</option>
+                        </select>
+
+                        <select class="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none">
+                            <option>All Universities</option>
+                            <option>MIT</option>
+                            <option>Stanford</option>
+                            <option>UC Berkeley</option>
+                            <option>Harvard</option>
+                        </select>
+
+                        <select class="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none">
+                            <option>Price Range</option>
+                            <option>$0 - $100</option>
+                            <option>$100 - $300</option>
+                            <option>$300 - $500</option>
+                            <option>$500+</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Project Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <!-- Project Card -->
+                    <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
+                        <!-- Modern mobile app development workspace -->
+                        <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=240" 
+                             alt="Mobile App Development" 
+                             class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">Mobile Development</span>
+                                <button class="text-gray-400 hover:text-red-500 transition-colors">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                            <h3 class="font-bold text-lg text-gray-900 mb-2">iOS App Development</h3>
+                            <p class="text-gray-600 mb-4 text-sm leading-relaxed">Native iOS app development with Swift and SwiftUI, including backend integration and App Store submission.</p>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center space-x-2">
+                                    <!-- Profile photo of a young mobile developer -->
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=32&h=32" 
+                                         alt="Student Profile" 
+                                         class="w-8 h-8 rounded-full object-cover">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">Michael Chen</p>
+                                        <p class="text-xs text-gray-500">Stanford</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                    <span class="text-sm font-medium text-gray-700">4.9</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-blue-600 font-bold text-xl">$599</span>
+                                <button class="bg-blue-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-blue-700 transition-colors">
+                                    Hire Student
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- More project cards... -->
+                    <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
+                        <!-- Digital marketing campaign workspace -->
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=240" 
+                             alt="Digital Marketing" 
+                             class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm font-medium">Marketing</span>
+                                <button class="text-red-500">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                            <h3 class="font-bold text-lg text-gray-900 mb-2">Digital Marketing Campaign</h3>
+                            <p class="text-gray-600 mb-4 text-sm leading-relaxed">Complete social media marketing strategy with content creation, ad campaigns, and analytics reporting.</p>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center space-x-2">
+                                    <!-- Profile photo of a young marketing student -->
+                                    <img src="https://pixabay.com/get/g7c29dacdc5b6ba93b4349990bbdb746306693ac6f5fd718ceb2e63e9b9968f2a4f465e5da9f5986bc16e6e7f45bf242e970f2a02ec6aed5472fe8159a37f213d_1280.jpg" 
+                                         alt="Student Profile" 
+                                         class="w-8 h-8 rounded-full object-cover">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">Jessica Smith</p>
+                                        <p class="text-xs text-gray-500">Northwestern</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                    <span class="text-sm font-medium text-gray-700">4.8</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-blue-600 font-bold text-xl">$249</span>
+                                <button class="bg-blue-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-blue-700 transition-colors">
+                                    Hire Student
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
+                        <!-- Content writing workspace with laptop and books -->
+                        <img src="https://pixabay.com/get/g11d1e05ccd674531e08a0dd14914a26e015eb8a858532b2a0592150dcb4dcd843cd5b05fae3b363271921d79a2de5ba71b2e3aac898812e24705000430fe69f6_1280.jpg" 
+                             alt="Content Writing" 
+                             class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-pink-100 text-pink-700 px-3 py-1 rounded-full text-sm font-medium">Writing</span>
+                                <button class="text-gray-400 hover:text-red-500 transition-colors">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                            <h3 class="font-bold text-lg text-gray-900 mb-2">Technical Content Writing</h3>
+                            <p class="text-gray-600 mb-4 text-sm leading-relaxed">High-quality technical articles, blog posts, and documentation writing for technology companies.</p>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center space-x-2">
+                                    <!-- Profile photo of a young journalism student -->
+                                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=32&h=32" 
+                                         alt="Student Profile" 
+                                         class="w-8 h-8 rounded-full object-cover">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">Rachel Green</p>
+                                        <p class="text-xs text-gray-500">Columbia</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                    <span class="text-sm font-medium text-gray-700">5.0</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-blue-600 font-bold text-xl">$99</span>
+                                <button class="bg-blue-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-blue-700 transition-colors">
+                                    Hire Student
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">Recent Purchases</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                                <div>
+                                    <p class="font-medium text-gray-900 text-sm">React Dashboard</p>
+                                    <p class="text-xs text-gray-500">Alex Kim • $299</p>
+                                </div>
+                                <span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">Delivered</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                                <div>
+                                    <p class="font-medium text-gray-900 text-sm">Logo Design</p>
+                                    <p class="text-xs text-gray-500">Emma Rodriguez • $149</p>
+                                </div>
+                                <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-xs">In Progress</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">Favorites</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                                <div>
+                                    <p class="font-medium text-gray-900 text-sm">iOS App Development</p>
+                                    <p class="text-xs text-gray-500">Michael Chen • $599</p>
+                                </div>
+                                <button class="text-red-500">
+                                    <i class="fas fa-heart text-sm"></i>
+                                </button>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                                <div>
+                                    <p class="font-medium text-gray-900 text-sm">Marketing Campaign</p>
+                                    <p class="text-xs text-gray-500">Jessica Smith • $249</p>
+                                </div>
+                                <button class="text-red-500">
+                                    <i class="fas fa-heart text-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">Quick Actions</h3>
+                        <div class="space-y-3">
+                            <button class="w-full bg-blue-50 text-blue-700 p-3 rounded-xl font-medium hover:bg-blue-100 transition-colors text-left">
+                                <i class="fas fa-search mr-3"></i>Browse Projects
+                            </button>
+                            <button class="w-full bg-gray-50 text-gray-700 p-3 rounded-xl font-medium hover:bg-gray-100 transition-colors text-left">
+                                <i class="fas fa-history mr-3"></i>Order History
+                            </button>
+                            <button class="w-full bg-gray-50 text-gray-700 p-3 rounded-xl font-medium hover:bg-gray-100 transition-colors text-left">
+                                <i class="fas fa-cog mr-3"></i>Settings
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div id="adminDashboard" class="page-content hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <!-- Dashboard Header -->
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Admin Dashboard</h1>
+                    <p class="text-gray-600">Platform management and verification queue</p>
+                </div>
+
+                <!-- Admin Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+                    <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
+                        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-users text-blue-600 text-lg"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-1">1,247</h3>
+                        <p class="text-gray-600 text-sm">Total Students</p>
+                        <span class="text-xs text-green-600">+23 this week</span>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
+                        <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-clock text-orange-600 text-lg"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-1">8</h3>
+                        <p class="text-gray-600 text-sm">Pending Verifications</p>
+                        <span class="text-xs text-orange-600">Needs review</span>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
+                        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-dollar-sign text-green-600 text-lg"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-1">$42.5K</h3>
+                        <p class="text-gray-600 text-sm">Monthly GMV</p>
+                        <span class="text-xs text-green-600">+18% vs last month</span>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
+                        <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-project-diagram text-purple-600 text-lg"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-1">342</h3>
+                        <p class="text-gray-600 text-sm">Active Projects</p>
+                        <span class="text-xs text-purple-600">15 new today</span>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
+                        <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-exclamation-triangle text-red-600 text-lg"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-1">2</h3>
+                        <p class="text-gray-600 text-sm">Active Disputes</p>
+                        <span class="text-xs text-red-600">Requires attention</span>
+                    </div>
+                </div>
+
+                <!-- Verification Queue -->
+                <div class="bg-white rounded-2xl shadow-md border border-gray-100 mb-8">
+                    <div class="p-6 border-b border-gray-100">
+                        <h2 class="text-xl font-bold text-gray-900">Student Verification Queue</h2>
+                        <p class="text-gray-600 text-sm mt-1">Review and approve student ID verifications</p>
+                    </div>
+                    <div class="p-6">
+                        <!-- Verification Item -->
+                        <div class="bg-gray-50 rounded-xl p-6 mb-4">
+                            <div class="flex items-start justify-between">
+                                <div class="flex items-start space-x-4">
+                                    <!-- Profile photo of a student awaiting verification -->
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=64&h=64" 
+                                         alt="Student Profile" 
+                                         class="w-16 h-16 rounded-xl object-cover">
+                                    <div class="flex-1">
+                                        <h3 class="font-bold text-lg text-gray-900">James Wilson</h3>
+                                        <p class="text-gray-600 mb-2">james.wilson@mit.edu</p>
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                                            <div>
+                                                <span class="text-gray-500">University:</span>
+                                                <p class="font-medium">MIT</p>
+                                            </div>
+                                            <div>
+                                                <span class="text-gray-500">Student ID:</span>
+                                                <p class="font-medium">STU-2024-987654</p>
+                                            </div>
+                                            <div>
+                                                <span class="text-gray-500">Program:</span>
+                                                <p class="font-medium">Computer Science</p>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3">
+                                            <span class="text-gray-500 text-sm">OCR Confidence:</span>
+                                            <div class="flex items-center space-x-2 mt-1">
+                                                <div class="w-32 bg-gray-200 rounded-full h-2">
+                                                    <div class="bg-green-500 h-2 rounded-full" style="width: 87%"></div>
+                                                </div>
+                                                <span class="text-sm font-medium text-green-600">87%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <!-- Mock student ID document thumbnail -->
+                                    <div class="w-20 h-14 bg-gray-200 rounded-lg flex items-center justify-center cursor-pointer hover:bg-gray-300 transition-colors">
+                                        <i class="fas fa-id-card text-gray-500"></i>
+                                    </div>
+                                    <div class="flex flex-col space-y-2">
+                                        <button class="bg-green-600 text-white px-4 py-2 rounded-xl font-medium hover:bg-green-700 transition-colors">
+                                            <i class="fas fa-check mr-2"></i>Approve
+                                        </button>
+                                        <button class="bg-red-600 text-white px-4 py-2 rounded-xl font-medium hover:bg-red-700 transition-colors">
+                                            <i class="fas fa-times mr-2"></i>Reject
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- More verification items... -->
+                        <div class="bg-gray-50 rounded-xl p-6 mb-4">
+                            <div class="flex items-start justify-between">
+                                <div class="flex items-start space-x-4">
+                                    <!-- Profile photo of another student awaiting verification -->
+                                    <img src="https://pixabay.com/get/g7ea5173100af4cd6d5aab056fa90d50a12244ae0d29afca6a3d76c87101f7650d50c9745469215757e95fb9b334a7ebbea8e7f157835aafc63159fd4a25b5e65_1280.jpg" 
+                                         alt="Student Profile" 
+                                         class="w-16 h-16 rounded-xl object-cover">
+                                    <div class="flex-1">
+                                        <h3 class="font-bold text-lg text-gray-900">Lisa Zhang</h3>
+                                        <p class="text-gray-600 mb-2">lisa.zhang@stanford.edu</p>
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                                            <div>
+                                                <span class="text-gray-500">University:</span>
+                                                <p class="font-medium">Stanford University</p>
+                                            </div>
+                                            <div>
+                                                <span class="text-gray-500">Student ID:</span>
+                                                <p class="font-medium">STU-2024-456789</p>
+                                            </div>
+                                            <div>
+                                                <span class="text-gray-500">Program:</span>
+                                                <p class="font-medium">Design</p>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3">
+                                            <span class="text-gray-500 text-sm">OCR Confidence:</span>
+                                            <div class="flex items-center space-x-2 mt-1">
+                                                <div class="w-32 bg-gray-200 rounded-full h-2">
+                                                    <div class="bg-yellow-500 h-2 rounded-full" style="width: 73%"></div>
+                                                </div>
+                                                <span class="text-sm font-medium text-yellow-600">73%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-20 h-14 bg-gray-200 rounded-lg flex items-center justify-center cursor-pointer hover:bg-gray-300 transition-colors">
+                                        <i class="fas fa-id-card text-gray-500"></i>
+                                    </div>
+                                    <div class="flex flex-col space-y-2">
+                                        <button class="bg-green-600 text-white px-4 py-2 rounded-xl font-medium hover:bg-green-700 transition-colors">
+                                            <i class="fas fa-check mr-2"></i>Approve
+                                        </button>
+                                        <button class="bg-red-600 text-white px-4 py-2 rounded-xl font-medium hover:bg-red-700 transition-colors">
+                                            <i class="fas fa-times mr-2"></i>Reject
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center py-4">
+                            <button class="text-blue-600 font-medium hover:text-blue-700 transition-colors">
+                                View All Pending Verifications (6 more)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Management Tools -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Recent Activity -->
+                    <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-6">
+                        <h2 class="text-xl font-bold text-gray-900 mb-4">Recent Platform Activity</h2>
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-4 p-3 bg-gray-50 rounded-xl">
+                                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-user-check text-green-600"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-medium text-gray-900">Student verified</p>
+                                    <p class="text-sm text-gray-500">Sarah Chen from UC Berkeley</p>
+                                </div>
+                                <span class="text-xs text-gray-400">2h ago</span>
+                            </div>
+
+                            <div class="flex items-center space-x-4 p-3 bg-gray-50 rounded-xl">
+                                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-plus text-blue-600"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-medium text-gray-900">New project listed</p>
+                                    <p class="text-sm text-gray-500">React Dashboard by Alex Kim</p>
+                                </div>
+                                <span class="text-xs text-gray-400">4h ago</span>
+                            </div>
+
+                            <div class="flex items-center space-x-4 p-3 bg-gray-50 rounded-xl">
+                                <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-shopping-cart text-purple-600"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-medium text-gray-900">Order completed</p>
+                                    <p class="text-sm text-gray-500">$299 Logo Design project</p>
+                                </div>
+                                <span class="text-xs text-gray-400">6h ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Admin Tools -->
+                    <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-6">
+                        <h2 class="text-xl font-bold text-gray-900 mb-4">Management Tools</h2>
+                        <div class="grid grid-cols-1 gap-3">
+                            <button class="bg-blue-50 text-blue-700 p-4 rounded-xl font-medium hover:bg-blue-100 transition-colors text-left">
+                                <i class="fas fa-users mr-3"></i>Manage Users
+                                <span class="block text-sm text-blue-600 mt-1">Search, suspend, or promote users</span>
+                            </button>
+
+                            <button class="bg-gray-50 text-gray-700 p-4 rounded-xl font-medium hover:bg-gray-100 transition-colors text-left">
+                                <i class="fas fa-project-diagram mr-3"></i>Moderate Projects
+                                <span class="block text-sm text-gray-600 mt-1">Review and manage project listings</span>
+                            </button>
+
+                            <button class="bg-gray-50 text-gray-700 p-4 rounded-xl font-medium hover:bg-gray-100 transition-colors text-left">
+                                <i class="fas fa-chart-bar mr-3"></i>Analytics Dashboard
+                                <span class="block text-sm text-gray-600 mt-1">Platform metrics and insights</span>
+                            </button>
+
+                            <button class="bg-gray-50 text-gray-700 p-4 rounded-xl font-medium hover:bg-gray-100 transition-colors text-left">
+                                <i class="fas fa-cog mr-3"></i>Platform Settings
+                                <span class="block text-sm text-gray-600 mt-1">Configure domain allowlist and features</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Detail Page -->
+        <div id="projectDetail" class="page-content hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <!-- Back Button -->
+                <button id="backToMarketplace" class="flex items-center space-x-2 text-gray-600 hover:text-blue-600 mb-6 transition-colors">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Marketplace</span>
+                </button>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Project Content -->
+                    <div class="lg:col-span-2">
+                        <!-- Project Header -->
+                        <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden mb-6">
+                            <!-- Modern web development workspace with multiple screens -->
+                            <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=400" 
+                                 alt="Full-Stack React Application Project" 
+                                 class="w-full h-64 object-cover">
+                            <div class="p-8">
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-medium">Web Development</span>
+                                    <button class="text-gray-400 hover:text-red-500 transition-colors">
+                                        <i class="fas fa-heart text-xl"></i>
+                                    </button>
+                                </div>
+                                <h1 class="text-3xl font-bold text-gray-900 mb-4">Full-Stack React Application Development</h1>
+                                <p class="text-gray-600 text-lg leading-relaxed mb-6">
+                                    I'll build a modern, responsive web application using React, Node.js, and MongoDB. This includes user authentication, payment integration, responsive design, and deployment to cloud platforms.
+                                </p>
+
+                                <!-- Skills Tags -->
+                                <div class="flex flex-wrap gap-2 mb-6">
+                                    <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">React</span>
+                                    <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">Node.js</span>
+                                    <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">MongoDB</span>
+                                    <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">JavaScript</span>
+                                    <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">API Development</span>
+                                    <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">Authentication</span>
+                                </div>
+
+                                <!-- Student Info -->
+                                <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-xl">
+                                    <!-- Profile photo of Alex Kim, the student developer -->
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=64&h=64" 
+                                         alt="Alex Kim Profile" 
+                                         class="w-16 h-16 rounded-full object-cover">
+                                    <div class="flex-1">
+                                        <h3 class="font-bold text-lg text-gray-900">Alex Kim</h3>
+                                        <p class="text-gray-600">Computer Science Student</p>
+                                        <p class="text-blue-600 font-medium">Massachusetts Institute of Technology (MIT)</p>
+                                        <div class="flex items-center space-x-4 mt-2">
+                                            <div class="flex items-center space-x-1">
+                                                <i class="fas fa-star text-yellow-400"></i>
+                                                <span class="font-medium">4.9</span>
+                                                <span class="text-gray-500">(24 reviews)</span>
+                                            </div>
+                                            <div class="flex items-center space-x-1">
+                                                <i class="fas fa-check-circle text-green-500"></i>
+                                                <span class="text-green-600 font-medium">Verified Student</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project Details -->
+                        <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-8">
+                            <h2 class="text-2xl font-bold text-gray-900 mb-6">What You'll Get</h2>
+                            <div class="space-y-4">
+                                <div class="flex items-start space-x-3">
+                                    <i class="fas fa-check text-green-500 mt-1"></i>
+                                    <p class="text-gray-700">Complete full-stack web application with modern React frontend</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <i class="fas fa-check text-green-500 mt-1"></i>
+                                    <p class="text-gray-700">RESTful API backend with Node.js and Express</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <i class="fas fa-check text-green-500 mt-1"></i>
+                                    <p class="text-gray-700">Database design and implementation with MongoDB</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <i class="fas fa-check text-green-500 mt-1"></i>
+                                    <p class="text-gray-700">User authentication and authorization system</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <i class="fas fa-check text-green-500 mt-1"></i>
+                                    <p class="text-gray-700">Responsive design that works on all devices</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <i class="fas fa-check text-green-500 mt-1"></i>
+                                    <p class="text-gray-700">Deployment setup and documentation</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <i class="fas fa-check text-green-500 mt-1"></i>
+                                    <p class="text-gray-700">Source code with detailed comments and README</p>
+                                </div>
+                            </div>
+
+                            <div class="mt-8 p-6 bg-blue-50 rounded-xl">
+                                <h3 class="font-bold text-gray-900 mb-2">Development Process</h3>
+                                <p class="text-gray-700 mb-4">I follow an agile development approach with regular updates and milestone reviews:</p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900">Week 1-2: Planning & Setup</h4>
+                                        <p class="text-sm text-gray-600">Requirements gathering, architecture design, project setup</p>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900">Week 3-4: Backend Development</h4>
+                                        <p class="text-sm text-gray-600">API development, database schema, authentication</p>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900">Week 5-6: Frontend Development</h4>
+                                        <p class="text-sm text-gray-600">React components, UI/UX implementation, integration</p>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900">Week 7-8: Testing & Deployment</h4>
+                                        <p class="text-sm text-gray-600">Quality assurance, deployment, documentation</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <div class="space-y-6">
+                        <!-- Pricing Card -->
+                        <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-6 sticky top-24">
+                            <div class="text-center mb-6">
+                                <div class="text-3xl font-bold text-blue-600 mb-2">$299</div>
+                                <p class="text-gray-600">Complete project price</p>
+                            </div>
+
+                            <div class="space-y-4 mb-6">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-600">Delivery Time:</span>
+                                    <span class="font-medium">8 weeks</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-600">Revisions:</span>
+                                    <span class="font-medium">3 included</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-600">University:</span>
+                                    <span class="font-medium">MIT</span>
+                                </div>
+                            </div>
+
+                            <button class="w-full bg-brand-gradient text-white py-4 rounded-xl font-semibold text-lg hover:opacity-90 transition-opacity mb-4">
+                                Hire Alex Kim
+                            </button>
+
+                            <button class="w-full bg-gray-100 text-gray-700 py-3 rounded-xl font-medium hover:bg-gray-200 transition-colors">
+                                <i class="fas fa-comment mr-2"></i>Contact Student
+                            </button>
+                        </div>
+
+                        <!-- Student Stats -->
+                        <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-6">
+                            <h3 class="font-bold text-gray-900 mb-4">Student Performance</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-600">Response Time:</span>
+                                    <span class="font-medium">< 2 hours</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-600">Completed Orders:</span>
+                                    <span class="font-medium">24</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-600">On-time Delivery:</span>
+                                    <span class="font-medium text-green-600">100%</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-600">Member Since:</span>
+                                    <span class="font-medium">Jan 2024</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Related Projects -->
+                        <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-6">
+                            <h3 class="font-bold text-gray-900 mb-4">More from Alex Kim</h3>
+                            <div class="space-y-4">
+                                <div class="border border-gray-200 rounded-xl p-4 hover:border-blue-300 transition-colors cursor-pointer">
+                                    <h4 class="font-medium text-gray-900 mb-1">Mobile App Development</h4>
+                                    <p class="text-sm text-gray-600 mb-2">React Native iOS & Android app</p>
+                                    <span class="text-blue-600 font-bold">$449</span>
+                                </div>
+                                <div class="border border-gray-200 rounded-xl p-4 hover:border-blue-300 transition-colors cursor-pointer">
+                                    <h4 class="font-medium text-gray-900 mb-1">E-commerce Website</h4>
+                                    <p class="text-sm text-gray-600 mb-2">Full shopping cart solution</p>
+                                    <span class="text-blue-600 font-bold">$599</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-8 h-8 bg-brand-gradient rounded-lg flex items-center justify-center">
+                            <i class="fas fa-tree text-white text-sm"></i>
+                        </div>
+                        <span class="font-bold text-xl">CollaboTree</span>
+                    </div>
+                    <p class="text-gray-400 leading-relaxed">
+                        The world's first student-only freelancing marketplace. Connect with verified students from top universities.
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-lg mb-4">For Students</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">How to Get Started</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Verification Process</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Student Resources</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Success Stories</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-lg mb-4">For Buyers</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Browse Projects</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">How it Works</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Trust & Safety</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Support</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Company</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-12 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 CollaboTree. All rights reserved. Student-verified freelancing platform.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            // Role switching functionality
+            const roleButtons = {
+                student: document.getElementById('studentRole'),
+                buyer: document.getElementById('buyerRole'),
+                admin: document.getElementById('adminRole')
+            };
+
+            const pages = {
+                landing: document.getElementById('landingPage'),
+                student: document.getElementById('studentDashboard'),
+                buyer: document.getElementById('buyerDashboard'),
+                admin: document.getElementById('adminDashboard'),
+                project: document.getElementById('projectDetail')
+            };
+
+            function hideAllPages() {
+                Object.values(pages).forEach(page => {
+                    if (page) page.classList.add('hidden');
+                });
+            }
+
+            function showPage(pageKey) {
+                hideAllPages();
+                if (pages[pageKey]) {
+                    pages[pageKey].classList.remove('hidden');
+                }
+            }
+
+            function setActiveRole(activeRole) {
+                Object.entries(roleButtons).forEach(([role, button]) => {
+                    if (button) {
+                        if (role === activeRole) {
+                            button.classList.add('bg-brand-gradient', 'text-white');
+                            button.classList.remove('text-gray-600', 'hover:text-blue-600');
+                        } else {
+                            button.classList.remove('bg-brand-gradient', 'text-white');
+                            button.classList.add('text-gray-600', 'hover:text-blue-600');
+                        }
+                    }
+                });
+            }
+
+            // Role button event listeners
+            if (roleButtons.student) {
+                roleButtons.student.addEventListener('click', () => {
+                    setActiveRole('student');
+                    showPage('student');
+                });
+            }
+
+            if (roleButtons.buyer) {
+                roleButtons.buyer.addEventListener('click', () => {
+                    setActiveRole('buyer');
+                    showPage('buyer');
+                });
+            }
+
+            if (roleButtons.admin) {
+                roleButtons.admin.addEventListener('click', () => {
+                    setActiveRole('admin');
+                    showPage('admin');
+                });
+            }
+
+            // Project card click handlers
+            const projectCards = document.querySelectorAll('#buyerDashboard .bg-white.rounded-2xl.shadow-md');
+            projectCards.forEach(card => {
+                card.addEventListener('click', (e) => {
+                    // Don't trigger if clicking on buttons
+                    if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
+                        return;
+                    }
+                    showPage('project');
+                });
+            });
+
+            // Back to marketplace button
+            const backButton = document.getElementById('backToMarketplace');
+            if (backButton) {
+                backButton.addEventListener('click', () => {
+                    showPage('buyer');
+                });
+            }
+
+            // Favorite buttons functionality
+            const favoriteButtons = document.querySelectorAll('.fa-heart');
+            favoriteButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    button.classList.toggle('text-red-500');
+                    button.classList.toggle('text-gray-400');
+                });
+            });
+
+            // Mock notification functionality
+            let notificationCount = 1;
+            const notificationBell = document.querySelector('.fa-bell');
+            if (notificationBell) {
+                notificationBell.addEventListener('click', () => {
+                    // TODO: Implement notification dropdown
+                    console.log('Show notifications');
+                });
+            }
+
+            // Mock search functionality
+            const searchInputs = document.querySelectorAll('input[type="text"]');
+            searchInputs.forEach(input => {
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        // TODO: Implement search functionality
+                        console.log('Search for:', e.target.value);
+                    }
+                });
+            });
+
+            // Initialize with landing page
+            showPage('landing');
+            setActiveRole('student');
+        })();
+    </script>
+</body>
+</html>

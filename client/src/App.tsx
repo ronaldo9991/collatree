@@ -7,6 +7,9 @@ import { useAuth } from "@/lib/auth";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Auth from "@/pages/auth";
+import ProjectsPage from "@/pages/project-list";
+import About from "@/pages/about";
+import Contact from "@/pages/contact";
 import StudentDashboard from "@/pages/student-dashboard";
 import BuyerDashboard from "@/pages/buyer-dashboard";
 import AdminDashboard from "@/pages/admin-dashboard";
@@ -38,6 +41,11 @@ function Router() {
       
       {/* Public homepage */}
       <Route path="/" component={Home} />
+
+      {/* Public pages */}
+      <Route path="/projects" component={ProjectsPage} />
+      <Route path="/about" component={About} />
+      <Route path="/contact" component={Contact} />
       
       <Route path="/student">
         <AuthGuard>
@@ -63,17 +71,11 @@ function Router() {
         </AuthGuard>
       </Route>
       
-      <Route path="/marketplace">
-        <AuthGuard>
-          <BuyerDashboard />
-        </AuthGuard>
-      </Route>
+      {/* Marketplace removed in favor of public Projects */}
       
       <Route path="/project/:slug">
         {(params) => (
-          <AuthGuard>
-            <ProjectDetail slug={params.slug} />
-          </AuthGuard>
+          <ProjectDetail slug={params.slug} />
         )}
       </Route>
       

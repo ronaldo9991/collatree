@@ -22,13 +22,7 @@ export default function Home() {
     },
   });
 
-  const handleRoleRedirect = (role: "STUDENT" | "BUYER") => {
-    if (role === "STUDENT") {
-      setLocation("/student");
-    } else {
-      setLocation("/buyer");
-    }
-  };
+  const handleViewAll = () => setLocation("/projects");
 
   const handleProjectView = (project: Project) => {
     setLocation(`/project/${project.slug}`);
@@ -47,24 +41,24 @@ export default function Home() {
           <p className="text-xl text-blue-100 mb-12 max-w-3xl mx-auto leading-relaxed">
             Connect with verified students worldwide. Hire talented students for your projects or showcase your skills to global buyers.
           </p>
-          
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <Button 
               size="lg"
               className="bg-white text-blue-700 px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-blue-50"
-              onClick={() => handleRoleRedirect("STUDENT")}
-              data-testid="button-student-cta"
+              onClick={handleViewAll}
+              data-testid="button-cta-projects"
             >
-              I'm a Student
+              Explore Projects
             </Button>
             <Button 
               size="lg"
               variant="outline"
               className="bg-blue-800 text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-blue-900 border border-blue-600"
-              onClick={() => handleRoleRedirect("BUYER")}
-              data-testid="button-buyer-cta"
+              onClick={() => setLocation("/contact")}
+              data-testid="button-cta-contact"
             >
-              I'm a Buyer
+              Contact Us
             </Button>
           </div>
 
@@ -91,12 +85,37 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured Projects */}
+      {/* Top Services / Top 5 */}
+      <section id="featured-projects" className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-2 tracking-tight">
+              Top Services
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Our most popular student projects right now
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {featuredProjects?.slice(0, 5).map((project) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                onView={handleProjectView}
+                showFavoriteButton={authData?.user.role === "BUYER"}
+                showHireButton={authData?.user.role === "BUYER"}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Projects (Recent) */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4 tracking-tight">
-              Featured Student Projects
+              Recently Added Projects
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Discover amazing work from verified students at top universities
@@ -119,7 +138,7 @@ export default function Home() {
             <Button 
               size="lg"
               className="bg-blue-600 text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-blue-700"
-              onClick={() => setLocation("/marketplace")}
+              onClick={handleViewAll}
               data-testid="button-view-all"
             >
               View All Projects
